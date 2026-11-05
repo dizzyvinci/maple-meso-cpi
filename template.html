@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>inflation.watch — MapleStory Classic meso inflation and the NX:meso rate</title>
+<meta name="description" content="A consumer price index for the MapleStory Classic World Free Market: what the most-traded items cost in mesos, day by day, and how many mesos 1,000 NX is worth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#0b1220; --bg-2:#0e1629; --panel:#121c33; --panel-2:#172340; --line:#1f2b48; --line-2:#2a3a60;
+  --text:#e9eef9; --muted:#8e9bb8; --faint:#5f6d8d;
+  --gold:#f3c454; --gold-2:#ffd978; --blue:#6ea0ff; --up:#3fd98a; --down:#ff6473;
+  --c-materials:#9db1dd; --c-consumables:#52cfc6; --c-scrolls:#c38bff; --c-equipment:#ffb454; --c-weapons:#ff8a7a;
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --display:"Sora","IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --top:56px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark; } }
+:root[data-theme="dark"]{ color-scheme:dark; }
+html{ scroll-padding-top:calc(var(--top) + env(safe-area-inset-top,0px) + 12px); }
+*,*::before,*::after{ box-sizing:inherit; }
+html,body{ margin:0; }
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
+}
+body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); background:rgba(11,18,32,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:10; }
+a{ color:inherit; text-decoration:none; }
+a:hover{ text-decoration:underline; text-decoration-color:var(--faint); text-underline-offset:3px; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; border-radius:4px; }
+svg text{ font-family:var(--sans); }
+
+/* ---------- header ---------- */
+.top{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:9; height:var(--top);
+  display:flex; align-items:center; gap:18px; padding:0 20px;
+  background:rgba(11,18,32,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{ font-family:var(--display); font-weight:600; font-size:19px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; white-space:nowrap; }
+.brand b{ font-weight:700; color:var(--gold); }
+.brand:hover{ text-decoration:none; }
+.coin{ width:20px; height:20px; flex:none; }
+.world{ color:var(--muted); font-size:13px; white-space:nowrap; }
+.tabs{ display:flex; gap:4px; margin-left:auto; }
+.tabs a{ padding:7px 12px; border-radius:8px; color:var(--muted); font-weight:500; font-size:14px; }
+.tabs a:hover{ text-decoration:none; color:var(--text); background:var(--panel); }
+.tabs a[aria-current="page"]{ color:var(--text); background:var(--panel-2); }
+.status{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:7px; white-space:nowrap; }
+.dot{ width:7px; height:7px; border-radius:50%; background:var(--up); box-shadow:0 0 0 3px rgba(63,217,138,.18); }
+.dot.warn{ background:var(--gold); box-shadow:0 0 0 3px rgba(243,196,84,.18); }
+
+/* ---------- layout ---------- */
+main{ max-width:1180px; margin:0 auto; padding:26px 20px 40px; }
+.view{ display:none; }
+.view.active{ display:block; }
+h1,h2,h3{ font-family:var(--display); letter-spacing:-.015em; margin:0; }
+h2{ font-size:19px; font-weight:600; }
+h3{ font-size:15px; font-weight:600; }
+p{ margin:0; }
+.muted{ color:var(--muted); }
+.faint{ color:var(--faint); }
+.small{ font-size:13px; }
+.card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+.card-h{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:16px 18px 0; flex-wrap:wrap; }
+.card-b{ padding:12px 18px 18px; }
+
+/* ---------- hero ---------- */
+.hero{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:18px; align-items:stretch; margin-bottom:18px; }
+.hero .card{ padding:22px 24px; display:flex; flex-direction:column; gap:10px; }
+.kicker{ font-size:13px; color:var(--muted); }
+.big{ font-family:var(--display); font-weight:700; font-size:64px; line-height:1; letter-spacing:-.03em; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+.big small{ font-size:16px; font-weight:500; color:var(--muted); letter-spacing:0; font-family:var(--sans); }
+.big.nx{ font-size:44px; color:var(--blue); }
+.big.nx small{ color:var(--muted); }
+.badges{ display:flex; gap:8px; flex-wrap:wrap; }
+.badge{ font-size:13px; font-weight:600; padding:4px 9px; border-radius:999px; background:var(--panel-2); border:1px solid var(--line-2); color:var(--muted); }
+.badge.up{ color:var(--up); border-color:rgba(63,217,138,.35); background:rgba(63,217,138,.1); }
+.badge.down{ color:var(--down); border-color:rgba(255,100,115,.35); background:rgba(255,100,115,.1); }
+.lede{ font-size:15.5px; line-height:1.55; max-width:62ch; }
+.hero-side .rows{ display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:14px; margin:4px 0 0; }
+.hero-side .rows dt{ color:var(--muted); }
+.hero-side .rows dd{ margin:0; text-align:right; }
+.up{ color:var(--up); } .down{ color:var(--down); }
+
+/* ---------- update strip / warnings ---------- */
+.strip{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); padding:10px 14px; border-radius:11px; border:1px solid var(--line); background:var(--panel); margin-bottom:14px; }
+.strip b{ color:var(--text); font-weight:600; }
+.strip .age{ margin-left:auto; }
+.strip.stale{ border-color:#6b5520; background:#1c1a10; color:#ffd978; }
+.strip.stale b{ color:#ffd978; }
+.strip.down{ border-color:#6b2a30; background:#1f1114; color:#ff9aa4; }
+.strip.down b{ color:#ff9aa4; }
+.noscript{ max-width:1180px; margin:20px auto; padding:0 20px; font-size:15px; line-height:1.6; }
+.noscript .card{ padding:20px 24px; }
+.status.stale .dot{ background:var(--gold); box-shadow:0 0 0 3px rgba(243,196,84,.18); }
+.status.down .dot{ background:var(--down); box-shadow:0 0 0 3px rgba(255,100,115,.18); }
+
+/* ---------- NX banner ---------- */
+.banner{ position:relative; overflow:hidden; margin-bottom:18px; min-height:300px; display:flex; align-items:flex-end;
+  background:radial-gradient(900px 420px at 88% 12%, rgba(243,196,84,.22), rgba(243,196,84,0) 60%),
+             radial-gradient(600px 300px at 10% 110%, rgba(110,160,255,.18), rgba(110,160,255,0) 60%), var(--panel); }
+.banner-art{ position:absolute; right:0; top:0; height:100%; width:min(58%,560px); pointer-events:none; }
+.banner-spark{ position:absolute; left:0; right:0; bottom:0; height:46%; width:100%; pointer-events:none; opacity:.9; }
+.banner-copy{ position:relative; z-index:1; padding:26px 28px 24px; max-width:640px; display:flex; flex-direction:column; gap:10px; }
+.banner .kicker{ font-size:13.5px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+.rate{ font-family:var(--display); font-weight:700; font-size:74px; line-height:.95; letter-spacing:-.035em; color:var(--gold-2); display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; text-shadow:0 0 28px rgba(243,196,84,.25); }
+.rate small{ font-family:var(--sans); font-weight:500; font-size:15px; color:var(--muted); letter-spacing:0; text-shadow:none; }
+.rate-sub{ font-size:14.5px; color:var(--text); display:flex; gap:6px 18px; flex-wrap:wrap; }
+.rate-sub span b{ font-weight:600; color:var(--text); }
+.rate-sub .m{ color:var(--muted); }
+.rate-sub a{ color:var(--blue); }
+.leaf{ color:#ff7a45; }
+
+/* ---------- index second row ---------- */
+.row2{ display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:18px; margin-bottom:18px; }
+.fresh{ padding:18px 20px; display:flex; flex-direction:column; gap:10px; }
+.fresh dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:13.5px; }
+.fresh dt{ color:var(--muted); } .fresh dd{ margin:0; text-align:right; }
+.fresh .ticks{ border-top:1px solid var(--line); padding-top:10px; font-size:12.5px; color:var(--muted); display:flex; flex-direction:column; gap:4px; max-height:120px; overflow:auto; }
+.fresh .ticks div{ display:flex; justify-content:space-between; gap:10px; }
+.fresh .ticks b{ color:var(--text); font-weight:500; }
+
+/* ---------- charts ---------- */
+.chart-card{ margin-bottom:18px; }
+.chart-tools{ display:flex; gap:6px; align-items:center; }
+.seg{ display:flex; background:var(--bg-2); border:1px solid var(--line); border-radius:9px; padding:3px; flex-wrap:wrap; }
+.seg button{ padding:5px 10px; border-radius:7px; font-size:13px; color:var(--muted); font-weight:500; }
+.seg button[aria-pressed="true"]{ background:var(--panel-2); color:var(--text); }
+.chart{ position:relative; width:100%; }
+.chart svg{ width:100%; height:auto; display:block; overflow:visible; touch-action:pan-y; }
+.tip{ position:absolute; pointer-events:none; background:#0b1220; border:1px solid var(--line-2); border-radius:9px; padding:8px 10px; font-size:12.5px; line-height:1.4; white-space:nowrap; box-shadow:0 8px 24px rgba(0,0,0,.4); z-index:3; transform:translate(-50%,-110%); opacity:0; transition:opacity .12s; }
+.tip.on{ opacity:1; }
+.tip .v{ font-family:var(--display); font-weight:600; font-size:15px; }
+.legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); padding:0 18px 14px; }
+.legend i{ display:inline-block; width:14px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px; }
+
+/* ---------- category strip ---------- */
+.cats{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
+.cat{ padding:14px 16px 12px; display:flex; flex-direction:column; gap:4px; cursor:pointer; text-align:left; }
+.cat .name{ display:flex; align-items:center; gap:8px; font-weight:600; font-size:14px; }
+.cat .swatch{ width:9px; height:9px; border-radius:3px; }
+.cat .val{ font-family:var(--display); font-weight:600; font-size:24px; letter-spacing:-.02em; display:flex; align-items:baseline; gap:8px; }
+.cat .val span{ font-family:var(--sans); font-size:12.5px; font-weight:600; }
+.cat svg{ width:100%; height:34px; display:block; margin-top:4px; }
+.cat[aria-pressed="true"]{ border-color:var(--line-2); background:var(--panel-2); }
+
+/* ---------- two columns ---------- */
+.two{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; margin-bottom:18px; }
+.contrib{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px; }
+.contrib li{ display:grid; grid-template-columns:minmax(0,1fr) 110px 54px; align-items:center; gap:10px; font-size:13.5px; }
+.contrib .nm{ display:flex; align-items:center; }
+.contrib .bar{ height:8px; border-radius:4px; background:var(--bg-2); position:relative; overflow:hidden; }
+.contrib .bar i{ position:absolute; top:0; bottom:0; border-radius:4px; }
+.contrib .pts{ text-align:right; font-weight:600; }
+.contrib .nm{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cat-dot{ display:inline-block; width:7px; height:7px; border-radius:2px; margin-right:8px; vertical-align:middle; }
+
+/* ---------- tables ---------- */
+.toolbar{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:14px 18px 0; }
+.search{ flex:1 1 200px; display:flex; align-items:center; gap:8px; background:var(--bg-2); border:1px solid var(--line); border-radius:9px; padding:7px 10px; color:var(--muted); }
+.search input{ flex:1; background:none; border:0; color:var(--text); font:inherit; outline:none; min-width:0; }
+.search input::placeholder{ color:var(--faint); }
+.tablewrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding:8px 0 4px; }
+table{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:720px; }
+th,td{ padding:9px 10px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--line); }
+th:first-child,td:first-child{ text-align:left; padding-left:18px; }
+th:last-child,td:last-child{ padding-right:18px; }
+th{ color:var(--muted); font-weight:500; font-size:12.5px; background:var(--panel); user-select:none; }
+th[data-k]{ cursor:pointer; }
+th[aria-sort]{ color:var(--text); }
+th[aria-sort="descending"]::after{ content:" ▾"; color:var(--gold); }
+th[aria-sort="ascending"]::after{ content:" ▴"; color:var(--gold); }
+tr:last-child td{ border-bottom:0; }
+tbody tr:hover td{ background:rgba(255,255,255,.025); }
+td.name{ font-weight:500; }
+td.name .stale{ color:var(--faint); font-weight:400; font-size:12px; margin-left:6px; }
+.star{ color:var(--gold); font-weight:700; margin-left:3px; text-decoration:none; }
+td svg{ width:84px; height:22px; vertical-align:middle; }
+.w{ display:inline-block; min-width:40px; }
+.wbar{ display:inline-block; height:6px; width:60px; background:var(--bg-2); border-radius:3px; vertical-align:middle; margin-left:8px; overflow:hidden; }
+.wbar i{ display:block; height:100%; background:var(--gold); border-radius:3px; }
+
+/* ---------- NX view ---------- */
+.conv{ display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; }
+.conv .field{ background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+.conv label{ display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px; }
+.conv input{ width:100%; background:none; border:0; color:var(--text); font-family:var(--display); font-weight:600; font-size:24px; letter-spacing:-.02em; outline:none; min-width:0; }
+.conv .swap{ font-size:20px; color:var(--faint); text-align:center; }
+.conv .field.nx input{ color:var(--blue); } .conv .field.meso input{ color:var(--gold-2); }
+.pill-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.pill{ font-size:12.5px; color:var(--muted); background:var(--bg-2); border:1px solid var(--line); border-radius:999px; padding:4px 10px; }
+.pill b{ color:var(--text); font-weight:600; }
+
+/* ---------- item icons and basket grid ---------- */
+.ico{ display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:7px; background:var(--bg-2); border:1px solid var(--line); vertical-align:middle; margin-right:9px; flex:none; }
+.ico svg, .ico img{ width:20px; height:20px; display:block; image-rendering:pixelated; }
+.ico img{ width:24px; height:24px; object-fit:contain; }
+.ico.sm{ width:24px; height:24px; margin-right:8px; } .ico.sm svg{ width:16px; height:16px; } .ico.sm img{ width:18px; height:18px; }
+.bgroup{ margin-top:6px; }
+.bgroup h3{ display:flex; align-items:center; gap:8px; margin:0 0 8px; font-size:14px; }
+.bgroup h3 .swatch{ width:9px; height:9px; border-radius:3px; display:inline-block; }
+.bgroup h3 span.muted{ font-weight:400; font-size:12.5px; }
+.bgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px; margin-bottom:16px; }
+.tile{ display:flex; align-items:center; gap:4px; background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:8px 10px; min-width:0; }
+.tile .t{ min-width:0; flex:1; }
+.tile .nm{ font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tile .sub{ font-size:11.5px; color:var(--muted); white-space:nowrap; }
+.tile .sub b{ color:var(--text); font-weight:600; }
+.diagram{ margin:6px 0 4px; } .diagram svg{ width:100%; height:auto; display:block; }
+.prose .bgrid{ max-width:none; }
+
+/* ---------- method ---------- */
+.prose{ max-width:none; font-size:15px; line-height:1.65; display:flex; flex-direction:column; gap:14px; }
+.prose h2{ margin-top:12px; } .prose > p, .prose > ul{ max-width:72ch; }
+.prose ul{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
+.prose code{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; background:var(--bg-2); border:1px solid var(--line); border-radius:5px; padding:1px 5px; }
+.prose .tablewrap{ padding:0; }
+.prose table{ min-width:0; font-size:13.5px; }
+.prose th,.prose td{ padding:7px 8px; }
+.prose th:first-child,.prose td:first-child{ padding-left:0; }
+.formula{ font-family:var(--display); font-size:17px; padding:12px 16px; background:var(--bg-2); border:1px solid var(--line); border-radius:10px; }
+
+/* ---------- footer / bottom bar ---------- */
+footer{ max-width:1180px; margin:0 auto; padding:0 20px 40px; color:var(--faint); font-size:12.5px; line-height:1.6; }
+footer a{ color:var(--muted); }
+.bottombar{ display:none; }
+
+@media (max-width:860px){
+  .hero{ grid-template-columns:1fr; }
+  .row2{ grid-template-columns:1fr; }
+  .banner{ min-height:340px; align-items:flex-start; }
+  .banner-art{ width:100%; height:52%; top:auto; bottom:0; opacity:.9; }
+  .banner-spark{ height:38%; }
+  .banner-copy{ padding:20px 18px 150px; }
+  .rate{ font-size:54px; }
+  .cats{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .two{ grid-template-columns:1fr; }
+  .tabs,.world{ display:none; }
+  .status{ margin-left:auto; }
+  .big{ font-size:52px; }
+  .big.nx{ font-size:36px; }
+  .conv{ grid-template-columns:1fr; }
+  .conv .swap{ transform:rotate(90deg); }
+  main{ padding:18px 14px 20px; }
+  footer{ padding:0 14px 96px; }
+  .top{ padding:0 14px; }
+  .bottombar{
+    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:9;
+    background:rgba(11,18,32,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));
+  }
+  .bottombar a{ flex:1; text-align:center; font-size:12px; color:var(--muted); padding:7px 4px; border-radius:9px; display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .bottombar a svg{ width:20px; height:20px; }
+  .bottombar a[aria-current="page"]{ color:var(--gold); }
+  .bottombar a:hover{ text-decoration:none; }
+}
+@media (max-width:480px){ .cat .val{ font-size:21px; } }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<script id="iw-data" type="application/json">__IW_DATA__</script>
+
+<header class="top">
+  <a class="brand" href="#index" aria-label="inflation.watch home">
+    <svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#f3c454"/><circle cx="12" cy="12" r="7.2" fill="none" stroke="#b8862a" stroke-width="1.4"/><path d="M8.3 15.5V8.6h1.7l2 3.6 2-3.6h1.7v6.9h-1.6v-4l-2.1 3.5-2.1-3.5v4z" fill="#8a5f12"/></svg>
+    inflation<b>.watch</b>
+  </a>
+  <span class="world">MapleStory Classic World</span>
+  <nav class="tabs" aria-label="Sections">
+    <a href="#index">Index</a><a href="#basket">Basket</a><a href="#nx">NX to meso</a><a href="#method">Method</a>
+  </nav>
+  <div class="status"><span class="dot" id="status-dot"></span><span id="status-text">—</span></div>
+</header>
+
+<noscript><div class="noscript"><div class="card"><strong>inflation.watch</strong> needs JavaScript for the charts. Last known figures: <span id="ns-figures">see fallback.html next to this page</span>.</div></div></noscript>
+<main>
+<div class="strip" id="strip"></div>
+<!-- ================= INDEX ================= -->
+<section class="view" id="view-index" aria-labelledby="h-index">
+  <div class="card banner" aria-labelledby="h-index">
+    <svg class="banner-art" viewBox="0 0 560 300" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+      <defs>
+        <radialGradient id="coinG" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffe48a"/><stop offset=".55" stop-color="#f3c454"/><stop offset="1" stop-color="#b8862a"/></radialGradient>
+        <linearGradient id="coinEdge" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9a73c"/><stop offset="1" stop-color="#8a5f12"/></linearGradient>
+        <linearGradient id="leafA" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ff9a5c"/><stop offset="1" stop-color="#e2502e"/></linearGradient>
+        <linearGradient id="leafB" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ffc24d"/><stop offset="1" stop-color="#f08a2c"/></linearGradient>
+        <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <symbol id="leaf" viewBox="0 0 100 100"><path d="M50 3 L57 21 L71 12 L66 33 L89 29 L76 49 L95 59 L71 65 L78 87 L56 76 L50 97 L44 76 L22 87 L29 65 L5 59 L24 49 L11 29 L34 33 L29 12 L43 21 Z"/><path d="M50 97 L50 62" stroke="rgba(120,40,10,.45)" stroke-width="3" fill="none"/></symbol>
+        <symbol id="coin" viewBox="-40 -40 80 80"><ellipse cx="0" cy="6" rx="34" ry="34" fill="url(#coinEdge)"/><circle cx="0" cy="0" r="34" fill="url(#coinG)"/><circle cx="0" cy="0" r="25" fill="none" stroke="#b8862a" stroke-width="2.5" stroke-opacity=".85"/><path d="M-13 13V-11h6l7 12 7-12h6v24h-5.5V-1L0 11-7.5-1v14z" fill="#8a5f12"/></symbol>
+        <symbol id="spark" viewBox="-10 -10 20 20"><path d="M0-10 C1-4 4-1 10 0 4 1 1 4 0 10 -1 4 -4 1 -10 0 -4-1-1-4 0-10Z"/></symbol>
+      </defs>
+      <g filter="url(#glow)">
+        <use href="#coin" x="330" y="70" width="150" height="150" transform="rotate(-12 405 145)"/>
+        <use href="#coin" x="250" y="150" width="104" height="104" transform="rotate(14 302 202)"/>
+        <use href="#coin" x="440" y="190" width="86" height="86" transform="rotate(22 483 233)"/>
+      </g>
+      <use href="#leaf" x="210" y="26" width="62" height="62" fill="url(#leafA)" transform="rotate(-28 241 57)" opacity=".95"/>
+      <use href="#leaf" x="486" y="40" width="48" height="48" fill="url(#leafB)" transform="rotate(34 510 64)" opacity=".9"/>
+      <use href="#leaf" x="372" y="226" width="40" height="40" fill="url(#leafA)" transform="rotate(118 392 246)" opacity=".85"/>
+      <use href="#spark" x="300" y="58" width="16" height="16" fill="#ffe9a8"/>
+      <use href="#spark" x="500" y="150" width="12" height="12" fill="#ffe9a8" opacity=".8"/>
+      <use href="#spark" x="236" y="128" width="9" height="9" fill="#ffe9a8" opacity=".7"/>
+      <use href="#spark" x="430" y="30" width="8" height="8" fill="#ffe9a8" opacity=".6"/>
+    </svg>
+    <div class="banner-spark" id="banner-spark"></div>
+    <div class="banner-copy">
+      <div class="kicker" id="h-index"><svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#f3c454"/><circle cx="12" cy="12" r="7.2" fill="none" stroke="#b8862a" stroke-width="1.4"/></svg>Estimated NX rate, MapleStory Classic World Free Market</div>
+      <div class="rate"><span id="nx-ratio">—</span><small>mesos per NX</small></div>
+      <div class="rate-sub" style="font-size:17px"><span><b id="nx-value">—</b> <span class="m">mesos per 1,000 NX</span></span></div>
+      <div class="badges" id="nx-badges"></div>
+      <div class="rate-sub" id="nx-rows"></div>
+      <p class="small muted" id="nx-cross"></p>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-h">
+      <div><h2>NX rate over time</h2><p class="small muted">Mesos per 1,000 NX. Gold dots are live polls of mesos.watch scanner medians; the blue line is each day's sales-weighted close from the daily feed, dashed for the trailing 7 days; pink is NiaDB's player-reported indicator as recorded at each build; teal is the smega rate from kerning.gg, the 7-day median of what sellers shout (solid) and what buyers shout (faint). Launch week shaded.</p></div>
+      <div class="chart-tools"><div class="seg" id="range-nx" role="group" aria-label="Range"><button aria-pressed="true" data-r="all">All</button><button aria-pressed="false" data-r="7">7 days</button><button aria-pressed="false" data-r="2">48 hours</button></div></div>
+    </div>
+    <div class="card-b"><div class="chart" id="chart-nx-index"></div></div>
+    <div class="legend"><span><i style="background:var(--gold)"></i>Live poll (mesos.watch sales)</span><span><i style="background:var(--blue)"></i>Daily close (feed sales)</span><span><i style="background:var(--blue);opacity:.5"></i>Trailing 7 days</span><span><i style="background:#ff8ab0"></i>Reported (NiaDB)</span><span><i style="background:#52cfc6"></i>Smega asks and bids (kerning.gg, 7-day medians)</span></div>
+  </div>
+
+  <div class="row2">
+    <div class="card hero-main" style="padding:22px 24px;display:flex;flex-direction:column;gap:10px">
+      <div class="kicker">Meso CPI, launch week = 100</div>
+      <div class="big"><span id="cpi-value">—</span><small id="cpi-asof"></small></div>
+      <div class="badges" id="cpi-badges"></div>
+      <p class="lede" id="cpi-lede"></p>
+      <p class="small muted" id="cpi-live"></p>
+    </div>
+    <div class="card fresh">
+      <h2 style="font-size:16px">Freshness</h2>
+      <dl id="fresh-rows"></dl>
+      <div class="ticks" id="ticks"></div>
+      <p class="small muted" style="margin-top:auto"><a href="#method">Where the numbers come from</a></p>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-h">
+      <div><h2>Meso CPI</h2><p class="small muted">Cost of the launch-week basket, in mesos. Gold line and dots are live polls every ten minutes (mesos.watch medians); the blue line is each day's close from the daily feed. Base week shaded; dashed lines mark Grand Launch and the Halloween shop rotation.</p></div>
+      <div class="chart-tools"><div class="seg" id="range-cpi" role="group" aria-label="Range"><button aria-pressed="true" data-r="all">All</button><button aria-pressed="false" data-r="launch">Since launch</button><button aria-pressed="false" data-r="14">14 days</button><button aria-pressed="false" data-r="2">48 hours</button></div></div>
+    </div>
+    <div class="card-b"><div class="chart" id="chart-cpi"></div></div>
+  </div>
+
+  <div class="cats" id="cats"></div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h"><div><h2>What moved it</h2><p class="small muted">Contribution to the index since launch week, in index points. Tap a category above to overlay it on the chart.</p></div></div>
+      <div class="card-b"><ul class="contrib" id="contrib"></ul></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h2>Free Market activity</h2><p class="small muted">Sales recorded per day across every item in the feed, with the mesos they moved.</p></div></div>
+      <div class="card-b"><div class="chart" id="chart-activity"></div></div>
+      <div class="legend"><span><i style="background:var(--blue)"></i>Sales per day</span><span><i style="background:var(--gold)"></i>Mesos traded per day</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BASKET ================= -->
+<section class="view" id="view-basket" aria-labelledby="h-basket">
+  <div class="card">
+    <div class="card-h"><div><h2 id="h-basket">The basket</h2><p class="small muted" id="basket-sub"></p></div></div>
+    <div class="toolbar">
+      <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="basket-q" type="search" placeholder="Filter items" autocomplete="off"></label>
+      <div class="seg" id="basket-cat" role="group" aria-label="Category"><button aria-pressed="true" data-c="">All</button></div>
+    </div>
+    <div class="tablewrap">
+      <table id="basket-table">
+        <thead><tr>
+          <th data-k="n">Item</th>
+          <th data-k="w">Weight</th>
+          <th data-k="vol">Launch-week volume</th>
+          <th data-k="p0">Launch week</th>
+          <th data-k="p">Latest</th>
+          <th data-k="chgBase">Since launch</th>
+          <th data-k="chg1d">1 day</th>
+          <th data-k="chg7d">7 days</th>
+          <th data-k="sold">Sales</th>
+          <th>Trend</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NX ================= -->
+<section class="view" id="view-nx" aria-labelledby="h-nx">
+  <div class="hero">
+    <div class="card hero-main">
+      <div class="kicker" id="h-nx">NX to meso, from what Cash Shop items resell for</div>
+      <div class="big nx"><span id="nx-ratio-2">—</span><small>mesos per NX, <span id="nx-value-2">—</span> per 1,000</small></div>
+      <div class="badges" id="nx-badges-2"></div>
+      <p class="lede" id="nx-lede"></p>
+    </div>
+    <div class="card hero-side">
+      <div class="kicker">Convert at today's rate</div>
+      <div class="conv">
+        <div class="field nx"><label for="in-nx">NX</label><input id="in-nx" inputmode="decimal" value="1000"></div>
+        <div class="swap" aria-hidden="true">⇄</div>
+        <div class="field meso"><label for="in-meso">mesos</label><input id="in-meso" inputmode="decimal"></div>
+      </div>
+      <div class="pill-row" id="conv-pills"></div>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-h">
+      <div><h2>Mesos per 1,000 NX</h2><p class="small muted">Sales-weighted across every tradeable Cash Shop item with a fixed NX price. The dashed line is the trailing 7-day rate.</p></div>
+    </div>
+    <div class="card-b"><div class="chart" id="chart-nx"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div><h2>Item by item</h2><p class="small muted">Nexon's NX price next to the Free Market median. Mesos per NX is the implied exchange rate; the 7-day column weights the last week's sales.</p></div></div>
+    <div class="tablewrap">
+      <table id="nx-table">
+        <thead><tr><th>Item</th><th>NX price</th><th>Median, mesos</th><th>Mesos per NX</th><th>7 days</th><th>Sales (7d)</th><th>Last sale</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="view" id="view-method" aria-labelledby="h-method">
+  <div class="card"><div class="card-b prose" style="padding-top:20px">
+    <h2 id="h-method">What inflation.watch measures</h2>
+    <p>Mesos have no official price. The nearest thing is what they buy. This site keeps two gauges for the MapleStory Classic World Free Market:</p>
+    <ul>
+      <li><strong>Meso CPI</strong>: the cost, in mesos, of a fixed basket of the most-traded items, compared with what the same basket cost in launch week. Above 100 means mesos buy less than they did at launch; below 100, more.</li>
+      <li><strong>NX to meso</strong>: how many mesos 1,000 NX is worth, read off Cash Shop items that players buy with NX and resell for mesos. When the number rises, each NX buys more mesos, which is the same thing as mesos getting cheaper.</li>
+    </ul>
+
+    <h2>The basket</h2>
+    <p>The headline basket is the <span id="m-n">50</span> items where the most mesos change hands: every item is ranked by its launch-week meso volume, average daily sales during Oct 21–27 times the average daily sale price that week, and the top 50 are taken, provided the item sold at least 50 times a day (the liquidity floor that keeps a rare item with one huge sale out). Cash Shop items are left out (they belong to the NX gauge), as are the Aurora Stamp palette coupons and items with a flagged regime change (asterisked below). The same volume share is the item's weight, capped at 8% so one scroll cannot move the index on its own; excess weight is spread over the other items. This is how the other trackers rank "volume" too: sales times price, not sales alone, so a 2-million-meso scroll that sells 60 times a day outweighs an ore that sells 30,000 times for 300.</p>
+    <p>The five category gauges use the same recipe on the 12 most-traded items of each category, with a 20% cap per item. The basket is reviewed, not rebuilt, so day-to-day moves come from prices rather than from items entering and leaving.</p>
+
+    <h2>Why these are sales, not reports</h2>
+    <p>Every price here is a trade that happened, read straight off the game. A Free Market shop lists each item on a row with its price; when someone buys, the game greys that row out (the stock is gone), and when the shop closes the sold rows have vanished. The scanners behind both feeds watch the shop windows on every channel and log a sale the moment a row turns grey or disappears, at the price that was printed on it. Nobody types anything in. That is different in kind from the other ways prices get collected: a smega is a seller announcing an asking price, which says what they hope for, not what anyone paid; a player report on a site like NiaDB is what one person says they saw or sold; a "listed now" figure is also an ask. Asks sit above sales, which is why the NiaDB cross-check runs high. The medians used here are of greyed-out rows only, and the daily feed keeps the asking prices in a separate column that the index never touches.</p>
+    <div class="diagram" aria-hidden="false">
+      <svg viewBox="0 0 760 250" role="img" aria-label="Diagram: a Free Market shop window with one row greyed out as sold, logged at its printed price; a smega and a player report shown as asks and claims that are not used">
+        <defs><linearGradient id="dgw" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1b2744"/><stop offset="1" stop-color="#121c33"/></linearGradient></defs>
+        <rect x="20" y="20" width="330" height="200" rx="12" fill="url(#dgw)" stroke="#2a3a60"/>
+        <rect x="20" y="20" width="330" height="30" rx="12" fill="#172340"/><rect x="20" y="36" width="330" height="14" fill="#172340"/>
+        <text x="36" y="40" font-size="12.5" fill="#e9eef9" font-weight="600">sharkmate's shop · Ch 3 · Room 18</text>
+        <g font-size="12" fill="#e9eef9">
+          <rect x="34" y="62" width="302" height="28" rx="6" fill="#0e1629"/><text x="46" y="80">Selective 5-slot Coupon</text><text x="326" y="80" text-anchor="end" fill="#ffd978">70,000</text>
+          <rect x="34" y="96" width="302" height="28" rx="6" fill="#0e1629" opacity=".35"/><text x="46" y="114" fill="#8e9bb8">Earring LUK Scroll: Intermediate</text><text x="326" y="114" text-anchor="end" fill="#8e9bb8">150,000</text>
+          <rect x="34" y="130" width="302" height="28" rx="6" fill="#0e1629"/><text x="46" y="148">Pan Lid</text><text x="326" y="148" text-anchor="end" fill="#ffd978">85,000</text>
+          <rect x="34" y="164" width="302" height="28" rx="6" fill="#0e1629" opacity=".35"/><text x="46" y="182" fill="#8e9bb8">Iron Ore ×100</text><text x="326" y="182" text-anchor="end" fill="#8e9bb8">32,200</text>
+        </g>
+        <text x="36" y="212" font-size="11" fill="#8e9bb8">greyed rows = bought, at the printed price</text>
+        <path d="M352 110 H400" stroke="#3fd98a" stroke-width="2" marker-end="url(#arr)"/><path d="M352 178 H400" stroke="#3fd98a" stroke-width="2"/>
+        <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3fd98a"/></marker></defs>
+        <rect x="404" y="80" width="150" height="62" rx="10" fill="#0e1629" stroke="#3fd98a"/>
+        <text x="479" y="104" text-anchor="middle" font-size="12.5" fill="#3fd98a" font-weight="600">logged as a sale</text><text x="479" y="124" text-anchor="middle" font-size="11.5" fill="#e9eef9">150,000 · 23:00 UTC · Ch 3</text>
+        <path d="M554 111 H600" stroke="#f3c454" stroke-width="2" marker-end="url(#arr2)"/>
+        <defs><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#f3c454"/></marker></defs>
+        <rect x="604" y="74" width="136" height="74" rx="10" fill="#0e1629" stroke="#f3c454"/>
+        <text x="672" y="98" text-anchor="middle" font-size="12.5" fill="#ffd978" font-weight="600">median of sales</text><text x="672" y="118" text-anchor="middle" font-size="11.5" fill="#e9eef9">into the CPI and</text><text x="672" y="134" text-anchor="middle" font-size="11.5" fill="#e9eef9">the NX rate</text>
+        <g font-size="11.5">
+          <rect x="404" y="160" width="336" height="28" rx="8" fill="#1f1114" stroke="#6b2a30"/><text x="416" y="178" fill="#ff9aa4">Smega: "S&gt; Earring LUK 60% 180k"</text><text x="728" y="178" text-anchor="end" fill="#ff9aa4">an ask, not used</text>
+          <rect x="404" y="194" width="336" height="28" rx="8" fill="#1f1114" stroke="#6b2a30"/><text x="416" y="212" fill="#ff9aa4">Player report: "sold mine for 160k"</text><text x="728" y="212" text-anchor="end" fill="#ff9aa4">a claim, not used</text>
+        </g>
+      </svg>
+    </div>
+
+    <h2>The basket in one paragraph, next to the US CPI</h2>
+    <p id="m-basket-para">The Meso CPI basket is the 50 items on the Classic World Free Market where the most mesos change hands, chosen and weighted by launch-week meso volume (daily sales times sale price), with a liquidity floor of 50 sales a day so a rarity with one huge sale cannot enter. Weighting by meso volume rather than by count means the basket reflects where mesos actually go: capped at 8% so no single scroll steers the index, it comes to roughly two thirds scrolls, with weapons and equipment most of the rest, and only a few percent in ores, drops and potions, because those trade in huge numbers for a few hundred mesos each. The index is a fixed-basket Laspeyres: the weighted average of each item's price relative to its launch-week price, with launch week set to 100. The US CPI from the Bureau of Labor Statistics works the same way at the top level, a fixed basket priced against a base period with expenditure weights, and differs everywhere else: BLS weights come from household expenditure surveys over about 200 item categories and are updated yearly, its prices are listed prices sampled from shops once a month, lower-level aggregation uses geometric means to absorb substitution within a category, quality changes get hedonic adjustment, and seasonal adjustment is published separately. This index uses actual sale medians from shop scans, recomputes daily with a live layer every ten minutes, treats every item as its own category with no substitution or quality adjustment, has no seasonal adjustment, and sits on a one-week base rather than the 1982–84 three-year base. It is closer in spirit to a commodity price index than to a cost-of-living measure, and like the US headline figure it is dominated by one group: shelter is about a third of the CPI, scrolls are two thirds of this one, which is why the category gauges exist.</p>
+    <div class="tablewrap"><table><thead><tr><th>Feature</th><th>inflation.watch Meso CPI</th><th>US CPI-U (BLS)</th></tr></thead><tbody>
+    <tr><td>Items</td><td>50 single items, the most traded by count</td><td>~80,000 price quotes in ~200 item categories</td></tr>
+    <tr><td>Weights</td><td>Launch-week spending shares, 8% cap</td><td>Consumer Expenditure Survey spending shares, updated yearly</td></tr>
+    <tr><td>Prices</td><td>Median of actual sales, daily; live medians every 10 min</td><td>Listed prices sampled from outlets, monthly</td></tr>
+    <tr><td>Formula</td><td>Fixed basket, arithmetic mean of price relatives</td><td>Fixed basket at the top level; geometric means within categories; chained CPI-U as an alternative</td></tr>
+    <tr><td>Quality and substitution</td><td>None</td><td>Hedonic adjustment for some goods; substitution within categories</td></tr>
+    <tr><td>Base</td><td>Launch week, Oct 21–27 2026 = 100</td><td>1982–84 = 100</td></tr>
+    <tr><td>Seasonal adjustment</td><td>None</td><td>Published separately</td></tr>
+    </tbody></table></div>
+
+    <h2>What is in the basket</h2>
+    <p>Every item in the headline basket, grouped the way the category gauges group them, with its weight and latest price. Icons are the game's own item art, served by the <a href="https://maplestory.io" target="_blank" rel="noopener">maplestory.io</a> community API that the other trackers also use; where the API has no sprite for an item, or a host blocks remote images, the site draws its own stand-in (scrolls banded by tier, with a dot for the stat; ores, gems and potions in their own colours).</p>
+    <div id="basket-groups"></div>
+    <h3 style="margin-top:4px">Cash Shop items behind the NX rate</h3>
+    <p class="small muted">Bought from Nexon for NX, resold for mesos. Each tile shows the NX price and the latest Free Market median.</p>
+    <div class="bgrid" id="nx-groups"></div>
+
+    <h2>The arithmetic</h2>
+    <div class="formula">CPI<sub>t</sub> = 100 × Σ w<sub>i</sub> × ( p<sub>i,t</sub> / p<sub>i,base</sub> )</div>
+    <ul>
+      <li><em>p<sub>i,t</sub></em> is the item's daily median sale price. A day counts only with five or more sales (the feed's own low-data line); otherwise the last counted price is carried forward for up to three days, after which the item sits out until it trades again and the remaining weights are rescaled.</li>
+      <li><em>p<sub>i,base</sub></em> is the mean of its daily medians over launch week, so the launch-week average is exactly 100.</li>
+      <li>Contributions on the Index page are <em>w<sub>i</sub> × (p<sub>i,t</sub>/p<sub>i,base</sub> − 1)</em>, in index points.</li>
+    </ul>
+
+    <h2>NX to meso</h2>
+    <p>For each day, every sale of a qualifying Cash Shop item is added up in mesos and in the NX Nexon charges for it. The rate is the ratio: total mesos paid divided by total NX those items cost. Items qualify when they have a fixed NX price and the buyer gets the same thing either way: inventory and storage slot coupons, AP and SP Reset Scrolls, pets and Water of Life, pet skills, pet equipment, and hair, face and color coupons. Mystery Fashion Crates are left out (their resale value depends on luck), as are megaphones and charms sold in bundles.</p>
+    <div class="tablewrap"><table id="m-nx-table"><thead><tr><th>Item</th><th>NX</th></tr></thead><tbody></tbody></table></div>
+    <p class="small muted">NX prices come from Nexon's Founder's Access Cash Shop notice (October 5, 2026), which still applies after Grand Launch. In Nexon's store 1,000 NX costs about one US dollar, which is why the Index page also shows what a million mesos is worth in NX. Mesos cannot be bought or sold for money; the rate here is the Cash Shop exchange, not a cash price.</p>
+
+    <h2>Three NX rates, three kinds of evidence</h2>
+    <p>The chart on the Index tab can carry three NX rates, and they are not supposed to agree. <strong>Sales</strong> (gold and blue): what buyers paid, from greyed-out shop rows. <strong>Reported</strong> (pink): NiaDB's indicator, built from prices signed-in players post on NiaDB over the last 24 hours, recorded here once per build with credit; it mixes asks and reported sales, so it runs above the sale rate. <strong>Smega asks</strong> (teal): what sellers shout in megaphones. The figures come from <a href="https://kerning.gg" target="_blank" rel="noopener">Kerning Exchange</a>, which reads every smega in game and keeps, per item, the 7-day median of selling shouts, the 7-day median of buying shouts and how many players shouted each. This site reads those item pages for the same cash items as the NX gauge, every two hours, and computes a shout-weighted rate: the sum of selling medians over the sum of NX prices, each item weighted by the number of players who shouted it; the bid rate is the same with buying medians. A seller's shout is an ask and a buyer's shout is a bid, so the two bracket the sale rate; the gap between them is the spread the market is haggling over. Both are 7-day medians, so they move slowly by construction. The site also accepts a local <code>smega.log</code> (one line per message, time then text) and computes a six-hour ask rate from it; that path only runs when the file exists.</p>
+
+    <h2>Where the numbers come from</h2>
+    <p>Two layers. The <strong>daily series</strong> (one close per day since Founder's Access) comes from the developer feed <a href="https://maplestory-classic.com/market" target="_blank" rel="noopener">maplestory-classic.com</a> publishes for its Free Market tracker (<code>market.json</code>): daily median sale prices from shop scans, refreshed once or twice a day. The <strong>live layer</strong> comes from <a href="https://mesos.watch" target="_blank" rel="noopener">mesos.watch</a>, whose in-game scanners read every Free Market shop on every channel and log sales as they happen; its typical price for an item is the median of its last thousand sales, with the hours they took. inflation.watch polls those medians for the basket and the cash items every ten minutes, with mesos.watch's permission, and recomputes the live NX rate (weighted by each item's sales per hour) and a live CPI estimate against the same launch-week base. The gold dots on the charts are those polls; the blue line is the daily close.</p>
+    <p>Why not faster than ten minutes: the figures are medians over hours of sales, so they barely move minute to minute, and polling a fan site harder than that only costs it bandwidth. Ten minutes keeps the page within one poll of the scanners.</p>
+    <p><strong>How NiaMeowDB's indicator differs.</strong> <a href="https://meowdb.com/msclassic/free-market" target="_blank" rel="noopener">NiaDB's NX:Meso Indicator</a> is built from prices that signed-in players report on NiaDB (their own listings, screenshots they import, and listings marked sold), over the last 24 hours, for Cash Shop items with a fixed NX price. It is not read from smegas or from the game. Because asking prices sit above sale prices, it tends to run higher than a scanner-based sale median; it is shown here as a credited cross-check, which is what NiaDB's reuse policy allows.</p>
+
+    <h2>Updating, and which sites allow it</h2>
+    <p>The page is a static build. <code>build.py</code> pulls both layers, recomputes every number above and writes <code>index.html</code> and <code>data.json</code>; run it every ten minutes (one cron line or the included GitHub Actions workflow) and an open page reloads itself when a newer build lands. mesos.watch's public rules say its data serves the site only, so the live layer runs with its permission and identifies itself in every request; <a href="https://meso.watch" target="_blank" rel="noopener">meso.watch</a> and <a href="https://maplestory.watch" target="_blank" rel="noopener">maplestory.watch</a> forbid automated collection and are not used; <a href="https://meowdb.com/reuse" target="_blank" rel="noopener">NiaMeowDB</a> allows the credited figure shown; <a href="https://kerning.gg" target="_blank" rel="noopener">kerning.gg</a> (Kerning Exchange) reads every smega in game and publishes per-item medians of what sellers and buyers shout, its robots.txt allows crawling and it states no restriction on reuse, so the smega series reads one page per NX item every two hours with an identified user agent and credits it; maplestory.market publishes no terms we could find. Also checked and set aside: freemarketclassic.com (smegas and an in-game FM tracker, terms unpublished) and meso.watch's and maplestory.watch's own smega pages, which fall under their no-automation rules.</p>
+
+    <h2>Reading it honestly</h2>
+    <ul>
+      <li>Medians summarise a day of trades; thin days (early Founder's Access, the first hours of a partial day) are noisier.</li>
+      <li>Fixed baskets drift from what people actually buy as the server ages; the basket should be reviewed when the level cap or content changes.</li>
+      <li>Materials falling while scrolls rise is a change in relative prices, not just a change in the value of mesos; the category gauges exist to show that.</li>
+    </ul>
+  </div></div>
+</section>
+</main>
+
+<footer id="foot"></footer>
+
+<nav class="bottombar" aria-label="Sections">
+  <a href="#index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 17l5-6 4 4 5-8 4 5"/></svg>Index</a>
+  <a href="#basket"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h16l-1.5 11h-13z"/><path d="M8 8a4 4 0 0 1 8 0"/></svg>Basket</a>
+  <a href="#nx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>NX</a>
+  <a href="#method"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v.5M11 11h1v5h1"/></svg>Method</a>
+</nav>
+
+<script>
+(function(){
+"use strict";
+var D = JSON.parse(document.getElementById('iw-data').textContent);
+var $ = function(s, r){ return (r||document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+var CATC = {Materials:'var(--c-materials)',Consumables:'var(--c-consumables)',Scrolls:'var(--c-scrolls)',Equipment:'var(--c-equipment)',Weapons:'var(--c-weapons)'};
+var CATHEX = {Materials:'#9db1dd',Consumables:'#52cfc6',Scrolls:'#c38bff',Equipment:'#ffb454',Weapons:'#ff8a7a'};
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* ---------- formatting ---------- */
+function fmtDate(s, long){ var d = new Date(s + 'T00:00:00Z'); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + (long ? ', ' + d.getUTCFullYear() : ''); }
+function fmtMeso(v){
+  if (v == null) return '—';
+  if (v >= 1e9) return (v/1e9).toFixed(2).replace(/\.?0+$/,'') + 'b';
+  if (v >= 1e6) return (v/1e6).toFixed(2).replace(/\.?0+$/,'') + 'm';
+  if (v >= 10000) return (v/1000).toFixed(1).replace(/\.0$/,'') + 'k';
+  if (v >= 100) return Math.round(v).toLocaleString('en-US');
+  return (Math.round(v*100)/100).toString();
+}
+function fmtInt(v){ return v == null ? '—' : Math.round(v).toLocaleString('en-US'); }
+function fmtPct(v, plus){ if (v == null) return '—'; var s = (Math.abs(v) >= 100 ? Math.abs(v).toFixed(0) : Math.abs(v).toFixed(1)); return (v > 0 && plus !== false ? '+' : v < 0 ? '\u2212' : '') + s + '%'; }
+function cls(v){ return v == null ? '' : v > 0 ? 'up' : v < 0 ? 'down' : ''; }
+function badge(label, v){ return '<span class="badge ' + cls(v) + '">' + fmtPct(v) + ' ' + label + '</span>'; }
+function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+/* ---------- original item icons (no game sprites) ---------- */
+var STATC = {STR:'#ff6473',DEX:'#3fd98a',INT:'#6ea0ff',LUK:'#c38bff',DEF:'#9db1dd','Def.':'#9db1dd',Attack:'#ffb454','Magic Attack':'#7aa2ff',Accuracy:'#ffd978',Speed:'#52cfc6',Jump:'#5ad1c8','Crit. Rate':'#ff8a7a'};
+var TIERC = {Greater:'#d7dde8',Intermediate:'#f3c454',Lesser:'#ff6473',Chaos:'#c38bff',Dark:'#8e9bb8'};
+var ORE = {Iron:'#8fa0b8',Bronze:'#c78a4b',Silver:'#d7dde8',Gold:'#f3c454',Mithril:'#9fd0c8',Orihalcon:'#7ec8a0',Adamantium:'#b0b8d0',Steel:'#aab4c8',Garnet:'#d9484f',Sapphire:'#4a86e8',Emerald:'#3fbf7a',Topaz:'#f0b23a',Opal:'#e3d4ff',Diamond:'#cfe8ff',Amethyst:'#a27be0',Aquamarine:'#5ad1c8','Black Crystal':'#5a5a7a'};
+var POT = {Red:'#ff6473',Orange:'#ff9a3c',White:'#f1f3f7',Blue:'#4a86e8',Mana:'#4a86e8',Magic:'#c38bff',Speed:'#52cfc6',Warrior:'#ff8a7a',Elixir:'#ffd978'};
+var DROP = {'Leather':'#b07a4b','Animal Fur Bundle':'#c9a06a',"Pig's Head":'#f5a3b6','Cursed Doll':'#8e5fa8','Fragment of Magic':'#7aa2ff','Screw':'#9aa8c7','Leaf':'#3fbf7a','Stiff Feather':'#e8eef9','Jr. Necki Skin':'#6fb37a','Firewood':'#a4683a','Tree Branch':'#8a5f3a','Horny Mushroom Cap':'#f08a2c','Slime Bubble':'#52cfc6','Octopus Leg':'#e67e9a','Green Mushroom Cap':'#3fbf7a',"Pig's Ribbon":'#ff8ab0',"Arwen's Glass Shoe":'#cfe8ff','Pure Water':'#9fd8ff','Unagi':'#ffb454'};
+function pick(map, name){ var k = Object.keys(map).filter(function(k){ return name.indexOf(k) >= 0; }).sort(function(a,b){ return b.length - a.length; })[0]; return k ? map[k] : null; }
+var SH = {
+  scroll: function(c, d){ return '<rect x="5" y="6" width="14" height="12" rx="1.5" fill="#e8dcc0"/><rect x="3.5" y="4.5" width="17" height="3" rx="1.5" fill="#cbbb97"/><rect x="3.5" y="16.5" width="17" height="3" rx="1.5" fill="#cbbb97"/><rect x="5" y="10.2" width="14" height="3.6" fill="'+c+'"/>' + (d ? '<circle cx="16.5" cy="9" r="2.2" fill="'+d+'" stroke="#0b1220" stroke-width="1"/>' : ''); },
+  ore: function(c){ return '<path d="M4 16l3.5-8 5-3.5 7.5 5.5-2.5 7.5H6z" fill="'+c+'"/><path d="M7.5 8l5-3.5 2.5 4.5-4.5 2.5z" fill="#fff" fill-opacity=".28"/>'; },
+  gem: function(c){ return '<path d="M12 3l8 7-8 11-8-11z" fill="'+c+'"/><path d="M12 3l-4 7h8z" fill="#fff" fill-opacity=".3"/>'; },
+  ingot: function(c){ return '<path d="M3 17l3.5-8h11L21 17z" fill="'+c+'"/><path d="M6.5 9h11l-1.5 3h-8z" fill="#fff" fill-opacity=".25"/>'; },
+  potion: function(c){ return '<path d="M9.5 3h5v2.5l-1 .8V9l4.2 7.2A3 3 0 0 1 15 20H9a3 3 0 0 1-2.7-3.8L10.5 9V6.3l-1-.8z" fill="'+c+'"/><rect x="9" y="2.5" width="6" height="2" rx="1" fill="#3a3a4a"/>'; },
+  water: function(c){ return '<path d="M12 3c3 4.5 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-6.5 6-11z" fill="'+c+'"/>'; },
+  food: function(c){ return '<path d="M3 12c3-5 9-6 14-2l4-3-1 5 1 5-4-3c-5 4-11 3-14-2z" fill="'+c+'"/><circle cx="7" cy="11" r="1.2" fill="#0b1220"/>'; },
+  arrow: function(c){ return '<path d="M4 20L18 6M18 6h-6M18 6v6" fill="none" stroke="'+c+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20l3-1-2-2z" fill="'+c+'"/>'; },
+  star: function(c){ return '<path d="M12 2l2.4 7.3H22l-6.1 4.4 2.3 7.3L12 16.6 5.8 21l2.3-7.3L2 9.3h7.6z" fill="'+c+'"/><circle cx="12" cy="12" r="2" fill="#0b1220"/>'; },
+  hat: function(c){ return '<path d="M4 16h16v3H4z" fill="'+c+'"/><path d="M7 16V10a5 5 0 0 1 10 0v6z" fill="'+c+'" fill-opacity=".8"/>'; },
+  glove: function(c){ return '<path d="M7 21v-7L5 11.5A1.8 1.8 0 0 1 8 9.5V6a1.8 1.8 0 0 1 3.6 0v.5a1.8 1.8 0 0 1 3.6 0v1a1.8 1.8 0 0 1 3.6 0V15l-2 6z" fill="'+c+'"/>'; },
+  shoe: function(c){ return '<path d="M3 17c0-3 3-4 5.5-6l2.5-4h3v4c3 1 7 2 7 5v1H3z" fill="'+c+'"/><path d="M3 17h18v2H3z" fill="#0b1220" fill-opacity=".35"/>'; },
+  earring: function(c){ return '<circle cx="12" cy="14.5" r="5" fill="none" stroke="'+c+'" stroke-width="2.6"/><circle cx="12" cy="5" r="2.2" fill="'+c+'"/><path d="M12 7v2.5" stroke="'+c+'" stroke-width="1.6"/>'; },
+  top: function(c){ return '<path d="M8 3l4 2 4-2 5 4-2.5 2.5V21h-13V9.5L3 7z" fill="'+c+'"/>'; },
+  pants: function(c){ return '<path d="M6.5 3h11l1 18h-5l-1.5-9-1.5 9h-5z" fill="'+c+'"/>'; },
+  cape: function(c){ return '<path d="M12 2.5l7.5 4-2.5 15h-10L4 6.5z" fill="'+c+'"/>'; },
+  shield: function(c){ return '<path d="M12 2l8 3v6c0 5-3.2 9.3-8 11-4.8-1.7-8-6-8-11V5z" fill="'+c+'"/><circle cx="12" cy="11" r="3" fill="#0b1220" fill-opacity=".35"/>'; },
+  sword: function(c){ return '<path d="M5 19l9-9" stroke="'+c+'" stroke-width="3" stroke-linecap="round"/><path d="M14 10l5-5v-1h-1l-5 5z" fill="'+c+'"/><path d="M4 16l4 4" stroke="#8a5f12" stroke-width="2.4" stroke-linecap="round"/>'; },
+  polearm: function(c){ return '<path d="M4 20L17 7" stroke="#8a5f12" stroke-width="2.2" stroke-linecap="round"/><path d="M15 4l5 1-1 5-4-1.5-1.5-1.5z" fill="'+c+'"/>'; },
+  wand: function(c){ return '<path d="M5 19L15 9" stroke="#8a5f12" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="7" r="3.2" fill="'+c+'"/>'; },
+  dagger: function(c){ return '<path d="M12 2l3 9-3 2-3-2z" fill="'+c+'"/><path d="M12 13v8" stroke="#8a5f12" stroke-width="2.4" stroke-linecap="round"/><path d="M8 13h8" stroke="#aab4c8" stroke-width="2"/>'; },
+  bow: function(c){ return '<path d="M6 3c8 3 8 15 0 18" fill="none" stroke="'+c+'" stroke-width="2.4"/><path d="M6 3v18" stroke="#e9eef9" stroke-width="1"/><path d="M8 12h11" stroke="#d7dde8" stroke-width="1.8"/>'; },
+  drop: function(c){ return '<path d="M12 3l7 4v10l-7 4-7-4V7z" fill="'+c+'"/><path d="M12 3l7 4-7 4-7-4z" fill="#fff" fill-opacity=".22"/>'; },
+  leaf: function(c){ return '<path d="M4 20C6 10 12 4 20 4c0 9-5 15-16 16z" fill="'+c+'"/><path d="M5 19l10-10" stroke="#0b1220" stroke-opacity=".35" stroke-width="1.5"/>'; },
+  feather: function(c){ return '<path d="M5 19C6 10 12 4 20 4c-1 8-6 13-15 15z" fill="'+c+'"/><path d="M5 19l9-9" stroke="#8e9bb8" stroke-width="1.5"/>'; },
+  coupon: function(c){ return '<path d="M3 7h18v3.5a2 2 0 0 0 0 3V17H3v-3.5a2 2 0 0 0 0-3z" fill="'+c+'"/><path d="M9 7v10" stroke="#0b1220" stroke-opacity=".4" stroke-dasharray="2 2"/>'; },
+  pet: function(c){ return '<circle cx="12" cy="14.5" r="4.2" fill="'+c+'"/><circle cx="6.5" cy="10.5" r="2" fill="'+c+'"/><circle cx="17.5" cy="10.5" r="2" fill="'+c+'"/><circle cx="9" cy="6.5" r="2" fill="'+c+'"/><circle cx="15" cy="6.5" r="2" fill="'+c+'"/>'; },
+  skill: function(c){ return '<path d="M12 2l2.5 6 6 .6-4.5 4 1.4 6L12 15.5 6.6 18.6 8 12.6 3.5 8.6l6-.6z" fill="'+c+'"/>'; },
+  hair: function(c){ return '<path d="M5 20c0-8 2-14 7-14s7 6 7 14l-3-4-2 4-2-5-2 5-2-4z" fill="'+c+'"/>'; },
+  face: function(c){ return '<circle cx="12" cy="12" r="8" fill="'+c+'"/><circle cx="9" cy="10.5" r="1.3" fill="#0b1220"/><circle cx="15" cy="10.5" r="1.3" fill="#0b1220"/><path d="M9 15q3 2 6 0" stroke="#0b1220" stroke-width="1.4" fill="none"/>'; },
+  claw: function(c){ return '<path d="M6 20V9a3 3 0 0 1 3-3h2v14z" fill="#8a5f12"/><path d="M11 6l3-4 1 6zM14 9l5-3-1 6zM14 13l6-1-3 5z" fill="'+c+'"/>'; },
+  tag: function(c){ return '<path d="M3 12l9-9h9v9l-9 9z" fill="'+c+'"/><circle cx="16.5" cy="7.5" r="1.6" fill="#0b1220"/>'; }
+};
+function itemIcon(name, cat){
+  var n = name, shape, color;
+  if (/Scroll/.test(n)){
+    var tier = (n.match(/: (Greater|Intermediate|Lesser|Chaos|Dark)/) || [])[1] || 'Greater';
+    var stat = (n.match(/(STR|DEX|INT|LUK|DEF|Def\.|Magic Attack|Attack|Accuracy|Speed|Jump|Crit\. Rate)/) || [])[1];
+    return SH.scroll(TIERC[tier] || '#d7dde8', stat ? STATC[stat] : null);
+  }
+  if (/Ingot/.test(n)) return SH.ingot(pick(ORE, n) || '#9aa8c7');
+  if (/Ore$/.test(n)) return SH.ore(pick(ORE, n) || '#9aa8c7');
+  if (/^(Garnet|Sapphire|Emerald|Topaz|Opal|Diamond|Amethyst|Aquamarine|Black Crystal)$/.test(n)) return SH.gem(ORE[n]);
+  if (/Potion$/.test(n)) return SH.potion(pick(POT, n) || '#c38bff');
+  if (/^Elixir/.test(n)) return SH.potion('#ffd978');
+  if (/Pure Water/.test(n)) return SH.water('#9fd8ff');
+  if (/Water of Life/.test(n)) return SH.water('#52cfc6');
+  if (/Unagi/.test(n)) return SH.food('#ffb454');
+  if (/Arrows/.test(n)) return SH.arrow('#d7dde8');
+  if (/Throwing Stars/.test(n)) return SH.star(/Mokbi/.test(n) ? '#ffd978' : '#9fd0c8');
+  if (/Leaf$/.test(n)) return SH.leaf('#3fbf7a');
+  if (/Feather/.test(n)) return SH.feather('#e8eef9');
+  if (/Coupon/.test(n)) return /Hair/.test(n) ? SH.hair(/Color/.test(n) ? '#c38bff' : '#ffb454') : /Face|Eye|Skin/.test(n) ? SH.face('#ffd1a8') : SH.coupon('#6ea0ff');
+  if (/Reset Scroll/.test(n)) return SH.scroll('#6ea0ff', null);
+  if (/Kitty|Puppy|Bunny|Pig$/.test(n) && cat === 'nx') return SH.pet(/Black/.test(n) ? '#8e9bb8' : /White/.test(n) ? '#f1f3f7' : /Pink/.test(n) ? '#ff8ab0' : '#c78a4b');
+  if (/Skill$/.test(n)) return SH.skill('#ffd978');
+  if (/Name Tag/.test(n)) return SH.tag('#6ea0ff');
+  if (/Ribbon|Top Hat|Laced Cap/.test(n) && cat === 'nx') return SH.hat(/Red/.test(n) ? '#ff6473' : /Blue|Sky/.test(n) ? '#6ea0ff' : /Yellow/.test(n) ? '#ffd978' : /Pink/.test(n) ? '#ff8ab0' : '#8e9bb8');
+  if (/^(Meba|Steel Igor|Steel Avarice)$/.test(n)) return SH.claw('#aab4c8');
+  if (/^(Ryden|Red Viper)$/.test(n)) return SH.bow(/Red/.test(n) ? '#ff6473' : '#c9a06a');
+  if (/^(Dark Pilfer|Dark Guise|Dark Burgler)$/.test(n)) return SH.hat('#5f6d8d');
+  if (/^(Stolen Fence|Pan Lid)$/.test(n)) return SH.shield(/Pan/.test(n) ? '#aab4c8' : '#a4683a');
+  if (/^Steel Sylvia$/.test(n)) return SH.glove('#aab4c8');
+  if (/Earrings|Square|Cross/.test(n)) return SH.earring(/Emerald/.test(n) ? '#3fbf7a' : /Yellow/.test(n) ? '#ffd978' : /Red/.test(n) ? '#ff6473' : /Star/.test(n) ? '#f3c454' : '#d7dde8');
+  if (/Gloves|Arten|Knucklevest/.test(n)) return SH.glove(/Blue/.test(n) ? '#6ea0ff' : /Black/.test(n) ? '#5f6d8d' : '#c9a06a');
+  if (/Shoes|Slippers|Gomushin|Boots/.test(n)) return SH.shoe(/Squishy/.test(n) ? '#ff8ab0' : /Blue/.test(n) ? '#6ea0ff' : '#b07a4b');
+  if (/Hat|Helmet|Bandana|Jester|Bamboo|Cap$/.test(n)) return SH.hat(/Brown/.test(n) ? '#a4683a' : /Blue/.test(n) ? '#6ea0ff' : /Green/.test(n) ? '#3fbf7a' : '#9db1dd');
+  if (/Pants/.test(n)) return SH.pants(/Black/.test(n) ? '#5f6d8d' : '#9db1dd');
+  if (/Cape/.test(n)) return SH.cape(/Raggedy/.test(n) ? '#a4683a' : '#c38bff');
+  if (/Lid|Shield/.test(n)) return SH.shield('#aab4c8');
+  if (/Robe|Pilfer|Guise|Burgler|Starlight|Sylvia|Lutia|Suit|Shirt|Dress|Knit|Vest|Jacket|Sneak/.test(n)) return SH.top(/Blue/.test(n) ? '#6ea0ff' : /Black|Dark/.test(n) ? '#5f6d8d' : /Red/.test(n) ? '#ff6473' : '#c38bff');
+  if (/Pole Arm|Spear/.test(n)) return SH.polearm('#aab4c8');
+  if (/Wand|Staff/.test(n)) return SH.wand(/Ice/.test(n) ? '#9fd8ff' : /Fairy/.test(n) ? '#ff8ab0' : '#c38bff');
+  if (/Bow$|Crossbow/.test(n)) return SH.bow('#c9a06a');
+  if (/Korean Fan|Dagger/.test(n)) return SH.dagger('#aab4c8');
+  if (/Scimitar|Sword|Axe/.test(n)) return SH.sword('#d7dde8');
+  if (cat === 'Equipment') return SH.top('#9db1dd');
+  if (cat === 'Weapons') return SH.sword('#d7dde8');
+  return SH.drop(pick(DROP, n) || '#9aa8c7');
+}
+var ICON_SRC = 'https://maplestory.io/api/GMS/255/item/{id}/icon';   // the game's item art, served by the maplestory.io community API
+function ico(name, cat, small, id, dataUri){
+  var fb = '<svg viewBox="0 0 24 24">' + itemIcon(name, cat) + '</svg>';
+  if (dataUri) return '<span class="ico' + (small ? ' sm' : '') + '" aria-hidden="true"><img src="' + dataUri + '" alt="" decoding="async"></span>';
+  if (id) return '<span class="ico' + (small ? ' sm' : '') + '" aria-hidden="true"><img src="' + ICON_SRC.replace('{id}', id) + '" alt="" loading="lazy" decoding="async" data-fb="' + esc(fb) + '"></span>';
+  return '<span class="ico' + (small ? ' sm' : '') + '" aria-hidden="true">' + fb + '</span>';
+}
+// an icon the API does not have, or a host that blocks remote images, falls back to the site's own drawing
+document.addEventListener('error', function(e){ var img = e.target; if (img && img.tagName === 'IMG' && img.dataset.fb){ var host = img.parentNode; host.innerHTML = img.dataset.fb; } }, true);
+
+/* ---------- routing ---------- */
+var VIEWS = ['index','basket','nx','method'];
+function route(){
+  var h = (location.hash || '#index').slice(1);
+  if (VIEWS.indexOf(h) < 0) h = 'index';
+  VIEWS.forEach(function(v){ $('#view-' + v).classList.toggle('active', v === h); });
+  $$('.tabs a, .bottombar a').forEach(function(a){ if (a.getAttribute('href') === '#' + h) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  window.scrollTo(0, 0);
+  draw();
+}
+window.addEventListener('hashchange', route);
+
+/* ---------- last-update clock, stale and degraded states ---------- */
+function ageText(iso){
+  var m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (m < 1) return 'just now'; if (m < 60) return m + ' min ago';
+  var h = Math.floor(m / 60); if (h < 48) return h + ' h ' + (m % 60) + ' min ago';
+  return Math.floor(h / 24) + ' days ago';
+}
+function updateClock(){
+  var built = D.generatedAt, it = D.intraday, lv = it && it.latest ? it.latest.at : null, st = D.status || {};
+  var ageMin = (Date.now() - new Date(built).getTime()) / 60000;
+  var t = new Date(built), hh = ('0'+t.getUTCHours()).slice(-2)+':'+('0'+t.getUTCMinutes()).slice(-2);
+  var level = ageMin > 180 ? 'down' : (ageMin > 40 || st.degraded) ? 'stale' : '';
+  $('#status-text').textContent = 'Updated ' + hh + ' UTC, ' + ageText(built);
+  var sEl = $('.status'); sEl.className = 'status ' + level;
+  var strip = $('#strip'); strip.className = 'strip ' + level;
+  var parts = ['Last update <b>' + fmtTime(built) + '</b>'];
+  if (lv) parts.push('live poll <b>' + fmtTime(lv).replace(' UTC','') + '</b>' + (it.stale ? ' (last good poll; mesos.watch was unreachable at build time)' : ''));
+  parts.push('daily feed <b>' + fmtTime(D.source.updatedAt).replace(' UTC','') + '</b>' + (st.feed && st.feed.fromCache ? ' (cached copy; the feed was unreachable)' : ''));
+  if (level === 'down') parts.push('<b>This page has not rebuilt for ' + ageText(built).replace(' ago','') + '. Treat every number as historical.</b>');
+  else if (level === 'stale' && !st.degraded) parts.push('<b>No rebuild for ' + ageText(built).replace(' ago','') + '; the live poll usually lands every 10 minutes.</b>');
+  else if (st.degraded) parts.push('<b>A data source was down at build time; showing the last good figures.</b>');
+  strip.innerHTML = parts.map(function(p){ return '<span>' + p + '</span>'; }).join('') + '<span class="age">' + ageText(built) + '</span>';
+}
+updateClock(); setInterval(updateClock, 30000);
+
+/* ---------- sparkline ---------- */
+function spark(vals, color, w, h, baseline){
+  w = w || 84; h = h || 22;
+  var v = vals.filter(function(x){ return x != null; });
+  if (v.length < 2) return '';
+  var mn = Math.min.apply(null, v), mx = Math.max.apply(null, v);
+  if (baseline != null){ mn = Math.min(mn, baseline); mx = Math.max(mx, baseline); }
+  if (mx === mn){ mx = mn + 1; }
+  var pts = vals.map(function(y, i){ return [ (i/(vals.length-1))*w, h - 2 - ((y-mn)/(mx-mn))*(h-4) ]; });
+  var d = pts.map(function(p,i){ return (i?'L':'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('');
+  var by = (h - 2 - ((baseline-mn)/(mx-mn))*(h-4)).toFixed(1);
+  var base = baseline != null ? '<line x1="0" x2="'+w+'" y1="'+by+'" y2="'+by+'" stroke="currentColor" stroke-opacity=".18" stroke-dasharray="2 3"/>' : '';
+  var last = pts[pts.length-1];
+  return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true">'+base+'<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2" fill="'+color+'"/></svg>';
+}
+
+/* ---------- line chart ---------- */
+function lineChart(host, opt){
+  host.innerHTML = '';
+  var W = Math.max(280, host.clientWidth || 600), H = opt.height || (W < 560 ? 220 : 300);
+  var padL = 44, padR = 14, padT = 18, padB = 30;
+  var dates = opt.dates, n = dates.length;
+  var all = [];
+  opt.series.forEach(function(s){ s.values.forEach(function(v){ if (v != null) all.push(v); }); });
+  if (opt.bars) opt.bars.values.forEach(function(v){ all.push(v); });
+  if (opt.baseline != null) all.push(opt.baseline);
+  var ymin = opt.ymin != null ? opt.ymin : Math.min.apply(null, all), ymax = Math.max.apply(null, all);
+  if (opt.ymin == null){ var pad = (ymax - ymin) * .1 || 1; ymin -= pad; ymax += pad; if (opt.floor != null) ymin = Math.max(ymin, opt.floor); }
+  else { ymax += (ymax - ymin) * .08; }
+  var x = function(i){ return padL + (n > 1 ? i/(n-1) : .5) * (W - padL - padR); };
+  var y = function(v){ return padT + (1 - (v - ymin)/(ymax - ymin)) * (H - padT - padB); };
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('width', '100%'); svg.setAttribute('role','img');
+  svg.setAttribute('aria-label', opt.label || 'chart');
+  var out = [];
+  var uid = 'g' + Math.random().toString(36).slice(2,7);
+  // y grid
+  var ticks = niceTicks(ymin, ymax, 4);
+  ticks.forEach(function(t){
+    out.push('<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+y(t).toFixed(1)+'" y2="'+y(t).toFixed(1)+'" stroke="#1f2b48" stroke-width="1"/>');
+    out.push('<text x="'+(padL-8)+'" y="'+(y(t)+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="#8e9bb8">'+(opt.yFormat||String)(t)+'</text>');
+  });
+  // base band
+  if (opt.band){
+    var i0 = dates.indexOf(opt.band[0]), i1 = dates.indexOf(opt.band[1]);
+    if (i0 >= 0 && i1 >= 0) out.push('<rect x="'+x(i0).toFixed(1)+'" y="'+padT+'" width="'+(x(i1)-x(i0)).toFixed(1)+'" height="'+(H-padT-padB)+'" fill="#f3c454" fill-opacity=".07"/>');
+  }
+  // dim region
+  if (opt.dimBefore){
+    var di = dates.indexOf(opt.dimBefore);
+    if (di > 0) out.push('<rect x="'+padL+'" y="'+padT+'" width="'+(x(di)-padL).toFixed(1)+'" height="'+(H-padT-padB)+'" fill="#000" fill-opacity=".18"/>');
+  }
+  // baseline
+  if (opt.baseline != null && opt.baseline > ymin && opt.baseline < ymax)
+    out.push('<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+y(opt.baseline).toFixed(1)+'" y2="'+y(opt.baseline).toFixed(1)+'" stroke="#f3c454" stroke-opacity=".5" stroke-dasharray="3 4"/>');
+  // bars
+  if (opt.bars){
+    var bmax = Math.max.apply(null, opt.bars.values) || 1;
+    var bw = Math.max(2, (W - padL - padR)/n * .62);
+    opt.bars.values.forEach(function(v, i){
+      var bh = (v / bmax) * (H - padT - padB) / (1.08);
+      out.push('<rect x="'+(x(i)-bw/2).toFixed(1)+'" y="'+(H-padB-bh).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+bh.toFixed(1)+'" fill="'+opt.bars.color+'" fill-opacity=".55" rx="1.5"/>');
+    });
+  }
+  // series
+  opt.series.forEach(function(s, si){
+    var pts = []; s.values.forEach(function(v, i){ if (v != null) pts.push([x(i), y(v)]); });
+    if (!pts.length) return;
+    var d = pts.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join('');
+    if (s.area){
+      out.push('<defs><linearGradient id="'+uid+si+'" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="'+s.color+'" stop-opacity=".35"/><stop offset="1" stop-color="'+s.color+'" stop-opacity="0"/></linearGradient></defs>');
+      out.push('<path d="'+d+'L'+pts[pts.length-1][0].toFixed(1)+' '+(H-padB)+'L'+pts[0][0].toFixed(1)+' '+(H-padB)+'Z" fill="url(#'+uid+si+')"/>');
+    }
+    if (s.glow) out.push('<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="7" stroke-opacity=".18" stroke-linejoin="round" stroke-linecap="round"/>');
+    out.push('<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="'+(s.width||2.2)+'" stroke-opacity="'+(s.opacity!=null?s.opacity:1)+'" stroke-linejoin="round" stroke-linecap="round"'+(s.dash?' stroke-dasharray="'+s.dash+'"':'')+'/>');
+    var last = pts[pts.length-1];
+    if (!s.noDot) out.push('<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="3.5" fill="'+s.color+'" stroke="#0b1220" stroke-width="2"/>');
+  });
+  // events
+  (opt.events||[]).forEach(function(e){
+    var i = dates.indexOf(e.date); if (i < 0) return;
+    out.push('<line x1="'+x(i).toFixed(1)+'" x2="'+x(i).toFixed(1)+'" y1="'+padT+'" y2="'+(H-padB)+'" stroke="#8e9bb8" stroke-opacity=".55" stroke-dasharray="2 4"/>');
+    var anchor = i > n*0.75 ? 'end' : 'start', dx = anchor === 'end' ? -4 : 4;
+    out.push('<text x="'+(x(i)+dx).toFixed(1)+'" y="'+(padT-6)+'" text-anchor="'+anchor+'" font-size="10.5" fill="#8e9bb8">'+esc(e.label)+'</text>');
+  });
+  // x labels
+  var step = Math.max(1, Math.round(n / (W < 560 ? 4 : 7)));
+  for (var i = 0; i < n - 1; i += step){
+    if (n - 1 - i < step/2) continue;
+    out.push('<text x="'+x(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="'+(i===0?'start':'middle')+'" font-size="11" fill="#8e9bb8">'+fmtDate(dates[i])+'</text>');
+  }
+  out.push('<text x="'+x(n-1).toFixed(1)+'" y="'+(H-8)+'" text-anchor="end" font-size="11" fill="#8e9bb8">'+fmtDate(dates[n-1])+'</text>');
+  // hover
+  out.push('<line id="'+uid+'-cur" x1="0" x2="0" y1="'+padT+'" y2="'+(H-padB)+'" stroke="#e9eef9" stroke-opacity=".35" style="display:none"/>');
+  out.push('<rect x="'+padL+'" y="'+padT+'" width="'+(W-padL-padR)+'" height="'+(H-padT-padB)+'" fill="transparent" id="'+uid+'-hit"/>');
+  svg.innerHTML = out.join('');
+  host.appendChild(svg);
+  var tip = el('div', 'tip'); host.appendChild(tip);
+  var cur = svg.querySelector('#'+uid+'-cur');
+  function show(ev){
+    var r = svg.getBoundingClientRect();
+    var px = (ev.clientX - r.left) * (W / r.width);
+    var i = Math.round((px - padL) / (W - padL - padR) * (n-1));
+    i = Math.max(0, Math.min(n-1, i));
+    cur.setAttribute('x1', x(i)); cur.setAttribute('x2', x(i)); cur.style.display = '';
+    tip.innerHTML = opt.tip(i);
+    tip.classList.add('on');
+    var hostR = host.getBoundingClientRect();
+    var left = (x(i)/W) * r.width;
+    var v0 = opt.series[0].values[i];
+    var top = (v0 != null ? y(v0) : padT) / H * r.height;
+    tip.style.left = Math.max(80, Math.min(hostR.width - 80, left)) + 'px';
+    tip.style.top = Math.max(50, top) + 'px';
+  }
+  function hide(){ cur.style.display = 'none'; tip.classList.remove('on'); }
+  svg.addEventListener('pointermove', show); svg.addEventListener('pointerdown', show);
+  svg.addEventListener('pointerleave', hide);
+}
+function niceTicks(a, b, count){
+  var span = b - a, raw = span / count, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  var steps = [1, 2, 2.5, 5, 10], step = steps[0]*mag;
+  for (var i = 0; i < steps.length; i++){ if (raw <= steps[i]*mag){ step = steps[i]*mag; break; } }
+  var t = [], v = Math.ceil(a/step)*step;
+  while (v <= b + 1e-9){ t.push(+v.toFixed(6)); v += step; }
+  return t;
+}
+
+/* ---------- time-based chart (x = real time) ---------- */
+function timeChart(host, opt){
+  host.innerHTML = '';
+  var W = Math.max(280, host.clientWidth || 600), Hh = opt.height || (W < 560 ? 230 : 320);
+  var padL = 48, padR = 14, padT = 20, padB = 30;
+  var t0 = opt.t0, t1 = opt.t1, all = [];
+  opt.series.forEach(function(s){ s.points.forEach(function(p){ if (p[0] >= t0 && p[0] <= t1) all.push(p[1]); }); });
+  if (!all.length){ host.innerHTML = '<p class="muted small" style="padding:30px 0;text-align:center">No points in this range yet. Polls accumulate as the build runs.</p>'; return; }
+  var ymin = Math.min.apply(null, all), ymax = Math.max.apply(null, all); var pad = (ymax - ymin) * .12 || 1; ymin = Math.max(0, ymin - pad); ymax += pad;
+  var x = function(t){ return padL + (t - t0) / (t1 - t0) * (W - padL - padR); };
+  var y = function(v){ return padT + (1 - (v - ymin) / (ymax - ymin)) * (Hh - padT - padB); };
+  var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + Hh); svg.setAttribute('width', '100%'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', opt.label || 'chart');
+  var out = [], uid = 'g' + Math.random().toString(36).slice(2, 7);
+  niceTicks(ymin, ymax, 4).forEach(function(t){
+    out.push('<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+y(t).toFixed(1)+'" y2="'+y(t).toFixed(1)+'" stroke="#1f2b48"/>');
+    out.push('<text x="'+(padL-8)+'" y="'+(y(t)+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="#8e9bb8">'+(opt.yFormat||String)(t)+'</text>');
+  });
+  if (opt.band){ var b0 = Math.max(t0, opt.band[0]), b1 = Math.min(t1, opt.band[1]); if (b1 > b0) out.push('<rect x="'+x(b0).toFixed(1)+'" y="'+padT+'" width="'+(x(b1)-x(b0)).toFixed(1)+'" height="'+(Hh-padT-padB)+'" fill="#f3c454" fill-opacity=".07"/>'); }
+  opt.series.forEach(function(s, si){
+    var pts = s.points.filter(function(p){ return p[0] >= t0 && p[0] <= t1 && p[1] != null; }).map(function(p){ return [x(p[0]), y(p[1])]; });
+    if (!pts.length) return;
+    var d = pts.map(function(p, i){ return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('');
+    if (s.area && pts.length > 1){
+      out.push('<defs><linearGradient id="'+uid+si+'" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="'+s.color+'" stop-opacity=".3"/><stop offset="1" stop-color="'+s.color+'" stop-opacity="0"/></linearGradient></defs>');
+      out.push('<path d="'+d+'L'+pts[pts.length-1][0].toFixed(1)+' '+(Hh-padB)+'L'+pts[0][0].toFixed(1)+' '+(Hh-padB)+'Z" fill="url(#'+uid+si+')"/>');
+    }
+    if (s.line !== false && pts.length > 1) out.push('<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="'+(s.width||2)+'" stroke-opacity="'+(s.opacity!=null?s.opacity:1)+'" stroke-linejoin="round" stroke-linecap="round"'+(s.dash?' stroke-dasharray="'+s.dash+'"':'')+'/>');
+    if (s.dots) pts.forEach(function(p){ out.push('<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(s.r||3)+'" fill="'+s.color+'" stroke="#0b1220" stroke-width="1.5"/>'); });
+    if (s.endDot){ var l = pts[pts.length-1]; out.push('<circle cx="'+l[0].toFixed(1)+'" cy="'+l[1].toFixed(1)+'" r="4" fill="'+s.color+'" stroke="#0b1220" stroke-width="2"/>'); }
+  });
+  (opt.events||[]).forEach(function(e){
+    if (e.t < t0 || e.t > t1) return;
+    out.push('<line x1="'+x(e.t).toFixed(1)+'" x2="'+x(e.t).toFixed(1)+'" y1="'+padT+'" y2="'+(Hh-padB)+'" stroke="#8e9bb8" stroke-opacity=".55" stroke-dasharray="2 4"/>');
+    var anchor = (e.t - t0) / (t1 - t0) > .75 ? 'end' : 'start';
+    out.push('<text x="'+(x(e.t) + (anchor === 'end' ? -4 : 4)).toFixed(1)+'" y="'+(padT-7)+'" text-anchor="'+anchor+'" font-size="10.5" fill="#8e9bb8">'+esc(e.label)+'</text>');
+  });
+  // x labels: whole days or hours
+  var span = t1 - t0, day = 864e5, stepMs = span > 10*day ? Math.ceil(span / (W < 560 ? 4 : 7) / day) * day : span > 2*day ? day : span > 0.5*day ? 6*36e5 : 36e5;
+  var start = Math.ceil(t0 / stepMs) * stepMs;
+  for (var t = start; t <= t1; t += stepMs){
+    var dt = new Date(t), lab = stepMs >= day ? fmtDate(dt.toISOString().slice(0,10)) : ('0'+dt.getUTCHours()).slice(-2) + ':00';
+    out.push('<text x="'+x(t).toFixed(1)+'" y="'+(Hh-8)+'" text-anchor="middle" font-size="11" fill="#8e9bb8">'+lab+'</text>');
+  }
+  out.push('<line id="'+uid+'-cur" x1="0" x2="0" y1="'+padT+'" y2="'+(Hh-padB)+'" stroke="#e9eef9" stroke-opacity=".35" style="display:none"/>');
+  out.push('<rect x="'+padL+'" y="'+padT+'" width="'+(W-padL-padR)+'" height="'+(Hh-padT-padB)+'" fill="transparent"/>');
+  svg.innerHTML = out.join(''); host.appendChild(svg);
+  var tip = el('div', 'tip'); host.appendChild(tip); var cur = svg.querySelector('#'+uid+'-cur');
+  var allPts = []; opt.series.forEach(function(s, si){ s.points.forEach(function(p){ if (p[0] >= t0 && p[0] <= t1 && p[1] != null) allPts.push({t:p[0], v:p[1], s:si, meta:p[2]}); }); });
+  function show(ev){
+    if (!allPts.length) return;
+    var r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * (W / r.width), tt = t0 + (px - padL) / (W - padL - padR) * (t1 - t0);
+    var best = allPts[0]; allPts.forEach(function(p){ if (Math.abs(p.t - tt) < Math.abs(best.t - tt)) best = p; });
+    cur.setAttribute('x1', x(best.t)); cur.setAttribute('x2', x(best.t)); cur.style.display = '';
+    tip.innerHTML = opt.tip(best); tip.classList.add('on');
+    var hostR = host.getBoundingClientRect();
+    tip.style.left = Math.max(90, Math.min(hostR.width - 90, x(best.t) / W * r.width)) + 'px';
+    tip.style.top = Math.max(54, y(best.v) / Hh * r.height) + 'px';
+  }
+  function hide(){ cur.style.display = 'none'; tip.classList.remove('on'); }
+  svg.addEventListener('pointermove', show); svg.addEventListener('pointerdown', show); svg.addEventListener('pointerleave', hide);
+}
+function fmtTime(iso){ var d = new Date(iso); return fmtDate(d.toISOString().slice(0,10)) + ', ' + ('0'+d.getUTCHours()).slice(-2) + ':' + ('0'+d.getUTCMinutes()).slice(-2) + ' UTC'; }
+
+var nxRange = 'all';
+function drawNxIndex(){
+  var nx = D.nx, it = D.intraday, day = 864e5;
+  var daily = nx.dates.map(function(d, i){ return [new Date(d + 'T12:00:00Z').getTime(), nx.rate[i] * 1000, {kind:'daily', trades: nx.trades[i], d: d}]; });
+  var d7 = nx.dates.map(function(d, i){ return [new Date(d + 'T12:00:00Z').getTime(), nx.rate7[i] * 1000]; });
+  var live = (it && it.series ? it.series : []).filter(function(p){ return p.nx != null; }).map(function(p){ return [new Date(p.at).getTime(), p.nx * 1000, {kind:'live', trades: p.nxTrades, at: p.at}]; });
+  var rep = (D.niadb || []).map(function(p){ return [new Date(p.at).getTime(), p.rate * 1000, {kind:'niadb', n: p.n, at: p.at}]; });
+  var sm = ((D.smega || {}).series || []).map(function(p){ return [new Date(p.at).getTime(), p.rate * 1000, {kind:'smega', n: p.offers, at: p.at, src: p.src, bid: p.bid}]; });
+  var smb = ((D.smega || {}).series || []).filter(function(p){ return p.bid; }).map(function(p){ return [new Date(p.at).getTime(), p.bid * 1000, {kind:'smegabid', n: p.offers, at: p.at}]; });
+  var tEnd = Math.max(daily[daily.length-1][0], live.length ? live[live.length-1][0] : 0) + 6*36e5;
+  var t0 = nxRange === '7' ? tEnd - 7*day - 6*36e5 : nxRange === '2' ? tEnd - 2*day - 6*36e5 : daily[0][0] - 12*36e5;
+  timeChart($('#chart-nx-index'), {
+    t0: t0, t1: tEnd, label: 'Mesos per 1,000 NX over time',
+    band: [new Date(D.base.start + 'T00:00:00Z').getTime(), new Date(D.base.end + 'T23:59:59Z').getTime()],
+    events: D.events.map(function(e){ return {t: new Date(e.date + 'T00:00:00Z').getTime(), label: e.label}; }),
+    series: [
+      {points: daily, color:'#6ea0ff', area:true, width:2.2, endDot:true},
+      {points: d7, color:'#6ea0ff', width:1.4, opacity:.5, dash:'4 4'},
+      {points: live, color:'#f3c454', width:1.6, opacity:.9, dots:true, r:3.5},
+      {points: rep, color:'#ff8ab0', width:1.4, opacity:.8, dash:'3 3', dots:true, r:3},
+      {points: sm, color:'#52cfc6', width:1.4, opacity:.8, dash:'3 3', dots:true, r:3},
+      {points: smb, color:'#52cfc6', width:1, opacity:.45, dash:'2 4', dots:true, r:2.5}
+    ],
+    yFormat: function(t){ return fmtMeso(t); },
+    tip: function(p){
+      var m = p.meta || {};
+      if (m.kind === 'live') return '<div class="muted">Live poll, '+fmtTime(m.at)+'</div><div class="v" style="color:#f3c454">'+fmtInt(p.v)+' per 1,000 NX</div><div class="muted">mesos.watch medians, '+fmtInt(m.trades)+' recent sales behind them</div>';
+      if (m.kind === 'niadb') return '<div class="muted">Reported, '+fmtTime(m.at)+'</div><div class="v" style="color:#ff8ab0">'+fmtInt(p.v)+' per 1,000 NX</div><div class="muted">NiaDB indicator, player-reported prices' + (m.n ? ' (' + m.n + ' today)' : '') + '</div>';
+      if (m.kind === 'smega') return '<div class="muted">Smega asks, '+fmtTime(m.at)+'</div><div class="v" style="color:#52cfc6">'+fmtInt(p.v)+' per 1,000 NX</div><div class="muted">7-day median of what sellers shout, '+fmtInt(m.n)+' players, via ' + (m.src || 'kerning.gg') + (m.bid ? ' · buyers shout ' + fmtInt(m.bid*1000) : '') + '</div>';
+      if (m.kind === 'smegabid') return '<div class="muted">Smega bids, '+fmtTime(m.at)+'</div><div class="v" style="color:#52cfc6;opacity:.8">'+fmtInt(p.v)+' per 1,000 NX</div><div class="muted">7-day median of what buyers shout (kerning.gg)</div>';
+      return '<div class="muted">'+fmtDate(m.d, true)+', daily close</div><div class="v" style="color:#6ea0ff">'+fmtInt(p.v)+' per 1,000 NX</div><div class="muted">'+fmtInt(m.trades)+' cash-item sales that day</div>';
+    }
+  });
+}
+$$('#range-nx button').forEach(function(b){ b.addEventListener('click', function(){
+  nxRange = b.dataset.r; $$('#range-nx button').forEach(function(x){ x.setAttribute('aria-pressed', x===b); }); drawNxIndex();
+});});
+
+/* ---------- INDEX view ---------- */
+var H = D.headline, cpiRange = 'all';
+function pctFromBase(v){ return v - 100; }
+function lvCpi(){ var it = D.intraday; return it && it.latest && it.latest.cpi != null ? it.latest : null; }
+(function renderHero(){
+  $('#cpi-value').textContent = H.latest.toFixed(1);
+  $('#cpi-asof').textContent = fmtDate(D.lastDate) + (D.partialLast ? ', partial day' : '');
+  $('#cpi-badges').innerHTML = badge('vs launch week', pctFromBase(H.latest)) + badge('in a day', H.chg1d) + badge('in 7 days', H.chg7d);
+  var cats = Object.keys(D.cats).map(function(k){ return {k:k, v:D.cats[k].latest}; }).sort(function(a,b){ return b.v - a.v; });
+  var hi = cats[0], lo = cats[cats.length-1];
+  var diff = pctFromBase(H.latest);
+  var s = 'The launch-week basket of the ' + H.n + ' most-traded Free Market items costs ' + Math.abs(diff).toFixed(0) + '% ' + (diff >= 0 ? 'more' : 'fewer') + ' mesos than it did in launch week. ';
+  var below = cats.filter(function(c){ return c.v < 100; }).length;
+  s += hi.k + ' lead at ' + fmtPct(pctFromBase(hi.v)) + '; ' + lo.k.toLowerCase() + ' are ' + (below === 1 ? 'the only group below launch-week prices, at ' : below > 1 ? 'the cheapest, at ' : 'the slowest, at ') + fmtPct(pctFromBase(lo.v)) + '.';
+  if (H.chg7d != null && Math.abs(H.chg7d) >= 15) s += ' Most of that is the last week: ' + fmtPct(H.chg7d) + ' in seven days.';
+  $('#cpi-lede').textContent = s;
+  if (lvCpi()) $('#cpi-live').innerHTML = 'Live estimate <b style="color:var(--gold-2)">' + lvCpi().cpi.toFixed(1) + '</b> from mesos.watch medians at ' + fmtTime(lvCpi().at) + ', covering ' + Math.round(lvCpi().cov*100) + '% of the basket. The daily line above is settled at each feed refresh.';
+  // NX banner: the live mesos.watch figure when it is fresh, else the daily feed
+  var nx = D.nx, it = D.intraday, lv = it && it.latest && it.latest.nx != null ? it.latest : null;
+  var rate = lv ? lv.nx : nx.latest;
+  $('#nx-value').textContent = fmtInt(rate * 1000);
+  $('#nx-ratio').textContent = rate.toFixed(1);
+  var vsBase = nx.base ? 100*(rate/nx.base - 1) : null, vsDaily = lv ? 100*(lv.nx/nx.latest - 1) : null, vsPrev = nx.prev ? 100*(nx.latest/nx.prev - 1) : null;
+  $('#nx-badges').innerHTML = badge('vs launch week', vsBase) + (lv ? badge('vs the daily close', vsDaily) : badge('since the previous day', vsPrev)) + '<span class="badge">7-day ' + fmtInt(nx.latest7*1000) + '</span>';
+  $('#nx-rows').innerHTML =
+    '<span><b>1,000,000 mesos</b> <span class="m">is worth</span> <b>' + fmtInt(1e6/rate) + ' NX</b> <span class="m">(about US$' + (1e3/rate).toLocaleString('en-US',{maximumFractionDigits:0}) + ' of NX)</span></span>' +
+    (lv ? '<span><span class="m">Live,</span> <b>' + fmtTime(lv.at) + '</b> <span class="m">from mesos.watch scanner medians behind ' + fmtInt(lv.nxTrades) + ' recent sales</span></span>' +
+          '<span><span class="m">Daily close</span> <b>' + fmtInt(nx.latest*1000) + '</b> <span class="m">(' + fmtDate(nx.latestDate) + ', ' + fmtInt(nx.trades[nx.trades.length-1]) + ' sales)</span></span>'
+        : '<span><span class="m">From</span> <b>' + fmtInt(nx.trades[nx.trades.length-1]) + '</b> <span class="m">cash-item sales on ' + fmtDate(nx.latestDate) + '</span></span>') +
+    '<span><span class="m">Launch week</span> <b>' + fmtInt(nx.base*1000) + '</b></span>';
+  var cc = D.crosscheck;
+  $('#nx-cross').innerHTML = cc && cc.ok
+    ? 'Cross-check: <a href="' + esc(cc.url) + '" target="_blank" rel="noopener">' + esc(cc.name) + '</a> read <b>' + fmtInt(cc.rate*1000) + '</b> mesos per 1,000 NX from ' + esc(cc.n || 'its') + ' player-reported prices today, as of ' + cc.at.slice(11,16) + ' UTC. Different samples and windows, so the two never match exactly.'
+    : 'Rate is sales-weighted across tradeable Cash Shop items; <a href="#nx">see each item</a>.';
+  // freshness card
+  var g = new Date(D.generatedAt), up = new Date(D.source.updatedAt);
+  function hhmm(d){ return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2); }
+  $('#fresh-rows').innerHTML =
+    '<dt>Feed refreshed</dt><dd>' + fmtDate(D.source.updatedAt.slice(0,10)) + ', ' + hhmm(up) + ' UTC</dd>' +
+    '<dt>Page built</dt><dd>' + fmtDate(D.generatedAt.slice(0,10)) + ', ' + hhmm(g) + ' UTC</dd>' +
+    '<dt>Latest day</dt><dd>' + fmtDate(D.lastDate) + (D.partialLast ? ' (partial)' : '') + '</dd>' +
+    (it && it.latest ? '<dt>mesos.watch poll</dt><dd>' + fmtTime(it.latest.at).replace(' UTC','Z') + ', ' + Object.keys(it.latest.items||{}).length + ' items</dd><dt>Polls kept</dt><dd>' + fmtInt(it.polls) + '</dd>' + (it.latest.basketPerHour ? '<dt>Basket sales, live</dt><dd>' + fmtInt(it.latest.basketPerHour) + ' an hour across the basket (mesos.watch)</dd>' : '') : '') +
+    '<dt>Polling</dt><dd>' + (it ? 'every 10 min live; feed 1 to 2× a day' : 'hourly; feed moves 1 to 2 times a day') + '</dd>' +
+    (cc && cc.ok ? '<dt>NiaDB indicator</dt><dd>' + cc.rate.toFixed(1) + ' mesos per NX</dd>' : '') +
+    (function(){ var st = D.status || {}, f = st.feed || {}, m = st.mesoswatch || {}, n = st.niadb || {};
+      return '<dt>Sources at build</dt><dd>' +
+        '<span class="' + (f.ok ? 'up' : 'down') + '">feed ' + (f.ok ? 'ok' : f.fromCache ? 'cached' : 'down') + '</span> · ' +
+        (st.hasOwnProperty('mesoswatch') ? '<span class="' + (m.ok ? 'up' : 'down') + '">mesos.watch ' + (m.ok ? m.items + ' items' : 'down') + '</span> · ' : '') +
+        '<span class="' + (n.ok ? 'up' : 'muted') + '">NiaDB ' + (n.ok ? 'ok' : 'skipped') + '</span></dd>'; })();
+  var tk = (D.ticks || []).slice().reverse().slice(0, 12);
+  $('#ticks').innerHTML = (tk.length ? '<div><span>Feed refreshes seen</span><b>' + (D.ticks||[]).length + '</b></div>' : '') +
+    tk.map(function(t){ return '<div><span>' + fmtDate(t.feedAt.slice(0,10)) + ' ' + t.feedAt.slice(11,16) + 'Z</span><b>' + fmtInt(t.nx*1000) + ' / NX · CPI ' + t.cpi.toFixed(1) + '</b></div>'; }).join('');
+})();
+
+function bannerSpark(){
+  var host = $('#banner-spark'); if (!host) return;
+  var vals = D.nx.rate.map(function(v){ return v*1000; });
+  var W = Math.max(300, host.clientWidth || 800), Hh = Math.max(60, host.clientHeight || 120);
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals); if (mx === mn) mx = mn + 1;
+  var n = vals.length;
+  var pts = vals.map(function(v, i){ return [ (i/(n-1))*W, 10 + (1-(v-mn)/(mx-mn))*(Hh-14) ]; });
+  var d = pts.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join('');
+  host.innerHTML = '<svg viewBox="0 0 '+W+' '+Hh+'" preserveAspectRatio="none" width="100%" height="100%" aria-hidden="true"><defs><linearGradient id="bsg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6ea0ff" stop-opacity=".28"/><stop offset="1" stop-color="#6ea0ff" stop-opacity="0"/></linearGradient></defs>' +
+    '<path d="'+d+'L'+W+' '+Hh+'L0 '+Hh+'Z" fill="url(#bsg)"/><path d="'+d+'" fill="none" stroke="#6ea0ff" stroke-opacity=".7" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>';
+}
+
+var activeCat = null;
+function drawCpi(){
+  var day = 864e5, dates = D.dates, it = D.intraday;
+  var daily = dates.map(function(d, i){ return [new Date(d + 'T12:00:00Z').getTime(), H.series[i], {kind:'daily', d: d, cov: H.coverage[i]}]; });
+  var live = (it && it.series ? it.series : []).filter(function(p){ return p.cpi != null; }).map(function(p){ return [new Date(p.at).getTime(), p.cpi, {kind:'live', at: p.at, cov: p.cov}]; });
+  var tEnd = Math.max(daily[daily.length-1][0], live.length ? live[live.length-1][0] : 0) + 6*36e5;
+  var t0 = cpiRange === 'launch' ? new Date(D.base.start + 'T00:00:00Z').getTime() : cpiRange === '14' ? tEnd - 14*day : cpiRange === '2' ? tEnd - 2*day - 6*36e5 : daily[0][0] - 12*36e5;
+  var series = [
+    {points: daily, color:'#6ea0ff', area:true, width:2.2, endDot:true},
+    {points: live, color:'#f3c454', width:1.8, dots:true, r:3.5}
+  ];
+  if (activeCat) series.push({points: dates.map(function(d, i){ return [new Date(d + 'T12:00:00Z').getTime(), D.cats[activeCat].series[i], {kind:'cat', d: d}]; }), color: CATHEX[activeCat], width:2});
+  timeChart($('#chart-cpi'), {
+    t0: t0, t1: tEnd, label: 'Meso CPI over time',
+    band: [new Date(D.base.start + 'T00:00:00Z').getTime(), new Date(D.base.end + 'T23:59:59Z').getTime()],
+    events: D.events.map(function(e){ return {t: new Date(e.date + 'T00:00:00Z').getTime(), label: e.label}; }),
+    series: series, yFormat: function(v){ return v.toFixed(0); },
+    tip: function(p){
+      var m = p.meta || {};
+      if (m.kind === 'live') return '<div class="muted">Live poll, '+fmtTime(m.at)+'</div><div class="v" style="color:#f3c454">'+p.v.toFixed(1)+' <span class="'+cls(p.v-100)+'" style="font-size:12px;font-weight:600">'+fmtPct(p.v-100)+' vs launch</span></div>' + (m.cov < .9 ? '<div class="muted">'+Math.round(m.cov*100)+'% of the basket traded</div>' : '');
+      if (m.kind === 'cat') return '<div class="muted">'+fmtDate(m.d, true)+'</div><div class="v" style="color:'+CATHEX[activeCat]+'">'+activeCat+' '+p.v.toFixed(1)+'</div>';
+      return '<div class="muted">'+fmtDate(m.d, true)+', daily close</div><div class="v" style="color:#6ea0ff">'+p.v.toFixed(1)+' <span class="'+cls(p.v-100)+'" style="font-size:12px;font-weight:600">'+fmtPct(p.v-100)+' vs launch</span></div>' + (m.cov < .9 ? '<div class="muted">'+Math.round(m.cov*100)+'% of the basket traded</div>' : '');
+    }
+  });
+}
+$$('#range-cpi button').forEach(function(b){ b.addEventListener('click', function(){
+  cpiRange = b.dataset.r; $$('#range-cpi button').forEach(function(x){ x.setAttribute('aria-pressed', x===b); }); drawCpi();
+});});
+
+(function renderCats(){
+  var host = $('#cats');
+  Object.keys(D.cats).forEach(function(k){
+    var c = D.cats[k];
+    var b = el('button', 'card cat'); b.setAttribute('aria-pressed','false'); b.dataset.k = k;
+    b.innerHTML = '<div class="name"><span class="swatch" style="background:'+CATC[k]+'"></span>'+k+'</div>' +
+      '<div class="val">'+c.latest.toFixed(1)+'<span class="'+cls(c.latest-100)+'">'+fmtPct(c.latest-100)+'</span></div>' +
+      '<div class="small muted">'+fmtPct(c.chg7d)+' in 7 days</div>' + spark(c.series.slice(Math.max(0,c.series.length-28)), CATHEX[k], 120, 34, 100);
+    b.title = c.items.join(', ');
+    b.addEventListener('click', function(){
+      activeCat = activeCat === k ? null : k;
+      $$('.cat').forEach(function(x){ x.setAttribute('aria-pressed', x.dataset.k === activeCat); });
+      drawCpi();
+    });
+    host.appendChild(b);
+  });
+})();
+
+(function renderContrib(){
+  var host = $('#contrib'), rows = D.contrib.slice(0, 10);
+  var mx = Math.max.apply(null, rows.map(function(r){ return Math.abs(r.pts); })) || 1;
+  rows.forEach(function(r){
+    var li = el('li');
+    var pct = Math.abs(r.pts)/mx*50;
+    var it0 = D.items.filter(function(x){ return x.n === r.n; })[0];
+    li.innerHTML = '<span class="nm" title="'+esc(r.n)+'">'+ico(r.n, r.cat, true, it0 && it0.id, it0 && it0.icon)+esc(r.n)+'</span>' +
+      '<span class="bar"><i style="'+(r.pts>=0?'left:50%':'right:50%')+';width:'+pct.toFixed(1)+'%;background:'+(r.pts>=0?'var(--up)':'var(--down)')+'"></i></span>' +
+      '<span class="pts '+cls(r.pts)+'">'+(r.pts>0?'+':'')+r.pts.toFixed(1)+'</span>';
+    host.appendChild(li);
+  });
+})();
+
+function drawActivity(){
+  var i0 = Math.max(0, D.dates.length - 21), dates = D.dates.slice(i0);
+  var sales = D.activity.sales.slice(i0), turn = D.activity.turnover.slice(i0);
+  var tmax = Math.max.apply(null, turn) || 1, smax = Math.max.apply(null, sales) || 1;
+  lineChart($('#chart-activity'), {
+    dates: dates, height: 220,
+    bars: {values: sales, color:'#6ea0ff'},
+    series: [{values: turn.map(function(v){ return v / tmax * smax; }), color:'#f3c454', width:2}],
+    ymin: 0, yFormat: function(t){ return fmtMeso(t); }, label: 'Free Market sales and turnover per day',
+    events: D.events.filter(function(e){ return dates.indexOf(e.date) >= 0; }),
+    tip: function(i){ return '<div class="muted">'+fmtDate(dates[i], true)+'</div><div class="v">'+fmtInt(sales[i])+' sales</div><div style="color:#f3c454">'+fmtMeso(turn[i])+' mesos</div>'; }
+  });
+}
+
+/* ---------- BASKET view ---------- */
+var sortK = 'w', sortDir = -1, catFilter = '';
+(function initBasket(){
+  $('#basket-sub').textContent = H.n + ' items where the most mesos change hands, weighted by launch-week meso volume (daily sales × price). Prices are daily medians in mesos; the trend is the last ' + D.dates.length + ' days against the launch-week level. An asterisk marks a note in Method.';
+  var seg = $('#basket-cat');
+  Object.keys(D.cats).forEach(function(k){ var b = el('button', '', k); b.dataset.c = k; b.setAttribute('aria-pressed','false'); seg.appendChild(b); });
+  $$('#basket-cat button').forEach(function(b){ b.addEventListener('click', function(){ catFilter = b.dataset.c; $$('#basket-cat button').forEach(function(x){ x.setAttribute('aria-pressed', x===b); }); renderBasket(); }); });
+  $('#basket-q').addEventListener('input', renderBasket);
+  $$('#basket-table th[data-k]').forEach(function(th){ th.addEventListener('click', function(){
+    var k = th.dataset.k; if (sortK === k) sortDir = -sortDir; else { sortK = k; sortDir = k === 'n' ? 1 : -1; } renderBasket();
+  });});
+})();
+function renderBasket(){
+  var q = $('#basket-q').value.trim().toLowerCase();
+  var rows = D.items.concat(D.flagged || []).filter(function(r){ return (!catFilter || r.cat === catFilter) && (!q || r.n.toLowerCase().indexOf(q) >= 0); });
+  rows.sort(function(a,b){ var x = a[sortK], y = b[sortK]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+  $$('#basket-table th[data-k]').forEach(function(th){ if (th.dataset.k === sortK) th.setAttribute('aria-sort', sortDir > 0 ? 'ascending' : 'descending'); else th.removeAttribute('aria-sort'); });
+  var mxw = Math.max.apply(null, D.items.map(function(r){ return r.w; }));
+  var tb = $('#basket-table tbody'); tb.innerHTML = '';
+  rows.forEach(function(r){
+    var tr = el('tr');
+    var stale = r.age > 0 ? '<span class="stale">last ' + fmtDate(r.last) + '</span>' : '';
+    var star = r.note ? '<a href="#method" class="star" title="'+esc(r.note)+'">*</a>' : '';
+    tr.innerHTML = '<td class="name">'+ico(r.n, r.cat, true, r.id, r.icon)+esc(r.n)+star+stale+(r.excluded ? '<span class="stale">not in the index</span>' : '')+'</td>' +
+      '<td>' + (r.excluded ? '<span class="muted">—</span>' : '<span class="w">'+r.w.toFixed(1)+'%</span><span class="wbar"><i style="width:'+(r.w/mxw*100).toFixed(0)+'%"></i></span>') + '</td>' +
+      '<td class="muted">'+fmtMeso(r.vol)+'/day</td>' +
+      '<td class="muted">'+fmtMeso(r.p0)+'</td><td>'+fmtMeso(r.p)+'</td>' +
+      '<td class="'+cls(r.chgBase)+'">'+fmtPct(r.chgBase)+'</td>' +
+      '<td class="'+(r.age>0?'':cls(r.chg1d))+'">'+(r.age>0?'—':fmtPct(r.chg1d))+'</td>' +
+      '<td class="'+cls(r.chg7d)+'">'+fmtPct(r.chg7d)+'</td>' +
+      '<td class="muted">'+fmtInt(r.sold)+'</td>' +
+      '<td>'+spark(r.spark, CATHEX[r.cat], 84, 22, r.p0)+'</td>';
+    tb.appendChild(tr);
+  });
+  if (!rows.length) tb.innerHTML = '<tr><td colspan="10" class="muted" style="text-align:center;padding:24px;white-space:normal">No basket item matches that. The basket holds the ' + H.n + ' most-traded items; smaller items are not tracked here.</td></tr>';
+}
+
+/* ---------- NX view ---------- */
+(function initNx(){
+  var nx = D.nx;
+  var it2 = D.intraday, lv2 = it2 && it2.latest && it2.latest.nx != null ? it2.latest.nx : nx.latest;
+  $('#nx-value-2').textContent = fmtInt(lv2*1000); $('#nx-ratio-2').textContent = lv2.toFixed(1);
+  var vsBase = nx.base ? 100*(nx.latest/nx.base - 1) : null, vsPrev = nx.prev ? 100*(nx.latest/nx.prev - 1) : null;
+  $('#nx-badges-2').innerHTML = badge('vs launch week', vsBase) + badge('in a day', vsPrev) + '<span class="badge">7-day ' + fmtInt(nx.latest7*1000) + '</span>';
+  var first = nx.rate[0];
+  $('#nx-lede').textContent = 'Players who buy Cash Shop items and resell them in the Free Market got ' + fmtInt(nx.latest*1000) + ' mesos for every 1,000 NX on ' + fmtDate(nx.latestDate) + ', across ' + fmtInt(nx.trades[nx.trades.length-1]) + ' sales. In launch week the same NX fetched ' + fmtInt(nx.base*1000) + ' mesos, and on ' + fmtDate(nx.dates[0]) + ', early in Founder\u2019s Access, only ' + fmtInt(first*1000) + '. Each NX buys more mesos as the server fills up with them.';
+  var inN = $('#in-nx'), inM = $('#in-meso'), lock = false;
+  function num(s){ return parseFloat(String(s).replace(/[^0-9.]/g,'')) || 0; }
+  function fromNx(){ if (lock) return; lock = true; inM.value = fmtInt(num(inN.value) * nx.latest); pills(); lock = false; }
+  function fromMeso(){ if (lock) return; lock = true; inN.value = fmtInt(num(inM.value) / nx.latest); pills(); lock = false; }
+  function pills(){
+    var n = num(inN.value);
+    $('#conv-pills').innerHTML = '<span class="pill">at the 7-day rate <b>' + fmtInt(n*nx.latest7) + '</b> mesos</span><span class="pill">at the launch-week rate <b>' + fmtInt(n*nx.base) + '</b> mesos</span><span class="pill">' + fmtInt(n) + ' NX is about <b>US$' + (n/1000).toLocaleString('en-US', {maximumFractionDigits:2}) + '</b> in the Nexon store</span>';
+  }
+  inN.addEventListener('input', fromNx); inM.addEventListener('input', fromMeso);
+  fromNx();
+  var tb = $('#nx-table tbody');
+  nx.items.forEach(function(r){
+    var tr = el('tr');
+    tr.innerHTML = '<td class="name">'+ico(r.n, 'nx', true, r.id, r.icon)+esc(r.n)+'</td><td style="color:var(--blue)">'+fmtInt(r.nx)+'</td><td>'+fmtMeso(r.p)+'</td><td><b>'+r.rate.toFixed(1)+'</b></td><td class="muted">'+(r.rate7!=null?r.rate7.toFixed(1):'—')+'</td><td class="muted">'+fmtInt(r.trades7)+'</td><td class="muted">'+fmtDate(r.last)+'</td>';
+    tb.appendChild(tr);
+  });
+  var mt = $('#m-nx-table tbody');
+  nx.items.slice().sort(function(a,b){ return a.n < b.n ? -1 : 1; }).forEach(function(r){ var tr = el('tr'); tr.innerHTML = '<td>'+esc(r.n)+'</td><td>'+fmtInt(r.nx)+'</td>'; mt.appendChild(tr); });
+  $('#m-n').textContent = H.n;
+  // basket tiles by category
+  var bg = $('#basket-groups');
+  Object.keys(D.cats).forEach(function(k){
+    var rows = D.items.filter(function(r){ return r.cat === k; }).sort(function(a,b){ return b.w - a.w; });
+    if (!rows.length) return;
+    var wsum = rows.reduce(function(a, r){ return a + r.w; }, 0);
+    var g = el('div', 'bgroup');
+    g.innerHTML = '<h3><span class="swatch" style="background:'+CATC[k]+'"></span>'+k+' <span class="muted">'+rows.length+' items, '+wsum.toFixed(1)+'% of the basket</span></h3><div class="bgrid">' +
+      rows.map(function(r){ return '<div class="tile">'+ico(r.n, r.cat, false, r.id, r.icon)+'<div class="t"><div class="nm" title="'+esc(r.n)+'">'+esc(r.n)+(r.note ? '<span class="star">*</span>' : '')+'</div><div class="sub"><b>'+r.w.toFixed(1)+'%</b> · '+fmtMeso(r.vol)+'/day · '+fmtMeso(r.p)+' mesos <span class="'+cls(r.chgBase)+'">'+fmtPct(r.chgBase)+'</span></div></div></div>'; }).join('') + '</div>';
+    bg.appendChild(g);
+  });
+  if ((D.flagged||[]).length){
+    var fg = el('div', 'bgroup');
+    fg.innerHTML = '<h3><span class="swatch" style="background:var(--faint)"></span>Shown, not indexed <span class="muted">price regime changed for a reason other than meso inflation</span></h3><div class="bgrid">' +
+      D.flagged.map(function(r){ return '<div class="tile">'+ico(r.n, r.cat, false, r.id, r.icon)+'<div class="t"><div class="nm" title="'+esc(r.n)+'">'+esc(r.n)+'<span class="star">*</span></div><div class="sub">'+fmtMeso(r.p)+' mesos <span class="'+cls(r.chgBase)+'">'+fmtPct(r.chgBase)+'</span> since launch</div></div></div>'; }).join('') + '</div>' +
+      '<ul class="small" style="padding-left:18px;margin:4px 0 12px">' + D.flagged.map(function(r){ return '<li><span class="star">*</span> <b>'+esc(r.n)+'</b>: '+esc(r.note)+'</li>'; }).join('') + '</ul>';
+    bg.appendChild(fg);
+  }
+  $('#nx-groups').innerHTML = nx.items.map(function(r){ return '<div class="tile">'+ico(r.n, 'nx', false, r.id, r.icon)+'<div class="t"><div class="nm" title="'+esc(r.n)+'">'+esc(r.n)+'</div><div class="sub"><b style="color:var(--blue)">'+fmtInt(r.nx)+' NX</b> · '+fmtMeso(r.p)+' mesos · '+r.rate.toFixed(1)+'/NX</div></div></div>'; }).join('');
+})();
+function drawNx(){
+  var nx = D.nx;
+  lineChart($('#chart-nx'), {
+    dates: nx.dates, series: [
+      {values: nx.rate.map(function(v){ return v*1000; }), color:'#6ea0ff', area:true, glow:true, width:2.4},
+      {values: nx.rate7.map(function(v){ return v*1000; }), color:'#6ea0ff', width:1.5, opacity:.55, dash:'4 4', noDot:true}
+    ],
+    band: [D.base.start, D.base.end], floor: 0,
+    events: D.events, yFormat: function(t){ return fmtMeso(t); }, label: 'Mesos per 1,000 NX over time',
+    tip: function(i){ return '<div class="muted">'+fmtDate(nx.dates[i], true)+'</div><div class="v">'+fmtInt(nx.rate[i]*1000)+' mesos per 1,000 NX</div><div class="muted">7-day '+fmtInt(nx.rate7[i]*1000)+' on '+fmtInt(nx.trades[i])+' sales</div>'; }
+  });
+}
+
+/* ---------- footer ---------- */
+(function(){
+  var g = new Date(D.generatedAt);
+  $('#foot').innerHTML = 'inflation.watch is a fan-made index and is not affiliated with, endorsed by or sponsored by Nexon. MapleStory and MapleStory Classic World are trademarks of Nexon. ' +
+    'Prices: daily Free Market medians from the <a href="https://maplestory-classic.com/market" target="_blank" rel="noopener">maplestory-classic.com</a> developer feed, data to ' + fmtDate(D.lastDate, true) + ' (feed ' + D.source.updatedAt.replace('T',' ').slice(0,16) + ' UTC). ' +
+    'NX prices from Nexon\u2019s Founder\u2019s Access Cash Shop notice. Smega medians from <a href="https://kerning.gg" target="_blank" rel="noopener">Kerning Exchange</a>. Item icons via <a href="https://maplestory.io" target="_blank" rel="noopener">maplestory.io</a>; MapleStory item art \u00a9 Nexon, shown for identification. ' + D.itemCount.toLocaleString('en-US') + ' items in the feed, ' + H.n + ' in the basket. Built ' + g.toISOString().replace('T',' ').slice(0,16) + ' UTC.';
+})();
+
+/* ---------- draw on route/resize ---------- */
+var drawn = {};
+function draw(){
+  var h = (location.hash || '#index').slice(1);
+  if (h === 'index'){ bannerSpark(); drawNxIndex(); drawCpi(); drawActivity(); }
+  if (h === 'nx') drawNx();
+  if (h === 'basket' && !drawn.basket){ renderBasket(); drawn.basket = true; }
+}
+var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(draw, 120); });
+route();
+// Self-hosted: build.py writes version.json (about 150 bytes) next to index.html. A visible tab checks it
+// about once a minute with a revalidating request (304 when unchanged), backs off when the server is struggling,
+// and reloads when a newer build lands. Hidden tabs do not poll at all. Everything shown is already embedded.
+(function(){
+  var wait = 60000, timer;
+  function schedule(){ clearTimeout(timer); timer = setTimeout(check, wait + Math.random() * 15000); }
+  function check(){
+    if (document.hidden){ schedule(); return; }
+    var done = false;
+    try {
+      fetch('version.json', {cache:'no-cache'}).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(function(j){
+        done = true; wait = 60000;
+        if (j && j.generatedAt && j.generatedAt > D.generatedAt) location.reload();
+        schedule();
+      }).catch(function(){ wait = Math.min(wait * 2, 600000); schedule(); });
+    } catch (e) { wait = Math.min(wait * 2, 600000); schedule(); }
+  }
+  schedule();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden){ clearTimeout(timer); timer = setTimeout(check, 2000); } });
+})();
+})();
+</script>
+</body>
+</html>
