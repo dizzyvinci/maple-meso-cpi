@@ -1,0 +1,33 @@
+# Rebuilds inflation.watch every 10 minutes and commits the result (served by Cloudflare Pages or GitHub Pages).
+name: build inflation.watch
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+concurrency:
+  group: build
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unpack bootstrap sources (first run only)
+        run: for f in *.gz; do [ -e "$f" ] && gunzip -kf "$f" && git rm -q --cached "$f" && rm -f "$f"; done; true
+      - name: Build (daily feed + mesos.watch live poll + NiaDB cross-check)
+        run: python3 build.py
+      - name: Commit the built site
+        run: |
+          git config user.name "inflation.watch bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          git commit -m "build $(date -u +%FT%TZ)" || exit 0
+          git pull --rebase -q || true
+          git push
