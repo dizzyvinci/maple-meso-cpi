@@ -4,7 +4,7 @@
   "url": "https://maplestory-classic.com/market.json",
   "updatedAt": "2026-11-04T08:30:56+00:00"
  },
- "generatedAt": "2026-11-06T11:16:53+00:00",
+ "generatedAt": "2026-11-06T18:02:51+00:00",
  "base": {
   "start": "2026-10-21",
   "end": "2026-10-27",
@@ -3550,9 +3550,9 @@
  "itemCount": 1424,
  "crosscheck": {
   "ok": true,
-  "rate": 22.4,
-  "n": "209",
-  "at": "2026-11-06T11:16+00:00",
+  "rate": 22.0,
+  "n": "763",
+  "at": "2026-11-06T18:02+00:00",
   "url": "https://meowdb.com/msclassic/free-market",
   "name": "NiaMeowDB NX:Meso Indicator"
  },
@@ -3669,680 +3669,679 @@
     "nx": 18.013,
     "nxTrades": 17603,
     "basketPerHour": 982
+   },
+   {
+    "at": "2026-11-06T18:04:04Z",
+    "cpi": 153.51,
+    "cov": 0.954,
+    "nx": 18.265,
+    "nxTrades": 17580,
+    "basketPerHour": 843
    }
   ],
   "latest": {
-   "at": "2026-11-06T11:17:59Z",
-   "cpi": 150.79,
-   "cov": 0.988,
-   "nx": 18.013,
-   "nxTrades": 17603,
-   "basketPerHour": 982,
+   "at": "2026-11-06T18:04:04Z",
+   "cpi": 153.51,
+   "cov": 0.954,
+   "nx": 18.265,
+   "nxTrades": 17580,
+   "basketPerHour": 843,
    "items": {
     "Gloves Attack Scroll: Intermediate": {
      "p": 1699999.0,
      "n": 1000,
-     "window": "3 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 1390000,
-     "listings": 613,
-     "perHour": 13.9
+     "window": "4 days",
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 1349999,
+     "listings": 570,
+     "perHour": 10.4
     },
     "Gloves Magic Attack Scroll: Intermediate": {
      "p": 400000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:09:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 320000,
-     "listings": 619,
+     "listings": 604,
      "perHour": 13.9
     },
     "Claw Attack Scroll: Intermediate": {
      "p": 490000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": 400000,
-     "listings": 509,
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 358888,
+     "listings": 496,
      "perHour": 13.9
     },
     "Kumbi Throwing Stars": {
      "p": 621667.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:12:00Z",
-     "low": 538888,
-     "listings": 479,
+     "updated": "2026-11-06T17:40:00Z",
+     "low": 510000,
+     "listings": 453,
      "perHour": 10.4
     },
     "Earring LUK Scroll: Intermediate": {
      "p": 164999.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 140000,
-     "listings": 407,
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 129999,
+     "listings": 379,
      "perHour": 20.8
     },
     "Dagger Attack Scroll: Intermediate": {
      "p": 370000.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:10:00Z",
-     "low": 310000,
-     "listings": 296,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 333333,
+     "listings": 284,
      "perHour": 10.4
     },
     "Earring INT Scroll: Intermediate": {
      "p": 124999.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 109000,
-     "listings": 421,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 99999,
+     "listings": 372,
      "perHour": 20.8
     },
     "Earring STR Scroll: Intermediate": {
      "p": 105000.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 92500,
-     "listings": 438,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 92999,
+     "listings": 411,
      "perHour": 20.8
     },
     "Earring DEX Scroll: Intermediate": {
      "p": 110000.0,
      "n": 1000,
-     "window": "2 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 94999,
-     "listings": 418,
-     "perHour": 20.8
+     "window": "3 days",
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 95000,
+     "listings": 414,
+     "perHour": 13.9
     },
     "Hat Accuracy Scroll: Intermediate": {
      "p": 49999.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:13:00Z",
-     "low": 40000,
-     "listings": 251,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 29999,
+     "listings": 246,
      "perHour": 20.8
     },
     "Pan Lid": {
      "p": 80000.0,
-     "n": 929,
-     "window": "2 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 55999,
-     "listings": 207,
-     "perHour": 19.4
+     "n": 926,
+     "window": "3 days",
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 45000,
+     "listings": 185,
+     "perHour": 12.9
     },
     "Pet Equip Speed Scroll: Intermediate": {
      "p": 120000.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:11:00Z",
-     "low": 110000,
-     "listings": 187,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 100000,
+     "listings": 170,
      "perHour": 20.8
     },
     "Wand Magic Attack Scroll: Intermediate": {
-     "p": 269999.0,
+     "p": 275000.0,
      "n": 1000,
-     "window": "4 days",
-     "updated": "2026-11-06T11:10:00Z",
-     "low": 300000,
-     "listings": 109,
-     "perHour": 10.4
-    },
-    "Bow Attack Scroll: Intermediate": {
-     "p": 200000.0,
-     "n": 1000,
-     "window": "4 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": 200000,
-     "listings": 176,
-     "perHour": 10.4
-    },
-    "Fairy Wand": {
-     "p": 99000.0,
-     "n": 633,
-     "window": "3 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 40000,
-     "listings": 268,
-     "perHour": 8.8
+     "window": "5 days",
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 309999,
+     "listings": 105,
+     "perHour": 8.3
     },
     "Mokbi Throwing Stars": {
      "p": 210000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 189000,
-     "listings": 498,
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 193900,
+     "listings": 480,
      "perHour": 13.9
     },
     "Emerald Earrings": {
      "p": 19999.0,
-     "n": 761,
-     "window": "12 hours",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 4999,
+     "n": 757,
+     "window": "18 hours",
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 5000,
      "listings": 1000,
-     "perHour": 63.4
+     "perHour": 42.1
     },
     "Wooden Top": {
      "p": 199999.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:17:00Z",
-     "low": 195000,
-     "listings": 323,
+     "updated": "2026-11-06T18:00:00Z",
+     "low": 189999,
+     "listings": 329,
      "perHour": 10.4
     },
     "Cape LUK Scroll: Intermediate": {
      "p": 399999.0,
      "n": 1000,
      "window": "7 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 399999,
-     "listings": 189,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 398888,
+     "listings": 166,
      "perHour": 6.0
     },
     "Spear Attack Scroll: Intermediate": {
      "p": 149999.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 149999,
-     "listings": 164,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 159997,
+     "listings": 150,
      "perHour": 10.4
     },
     "Polearm Attack Scroll: Intermediate": {
-     "p": 183500.0,
+     "p": 185000.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": 187000,
-     "listings": 122,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 185000,
+     "listings": 117,
      "perHour": 8.3
     },
     "Arwen's Glass Shoe": {
      "p": 59999.0,
      "n": 1000,
-     "window": "2 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 48888,
-     "listings": 129,
-     "perHour": 20.8
+     "window": "3 days",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 47777,
+     "listings": 139,
+     "perHour": 13.9
     },
     "Two-handed Sword Attack Scroll: Intermediate": {
      "p": 99999.0,
      "n": 1000,
-     "window": "3 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 99000,
-     "listings": 106,
-     "perHour": 13.9
+     "window": "4 days",
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 100000,
+     "listings": 98,
+     "perHour": 10.4
     },
     "Korean Fan": {
-     "p": 69999.0,
-     "n": 239,
+     "p": 69696.0,
+     "n": 244,
      "window": "3 days",
-     "updated": "2026-11-06T11:13:00Z",
-     "low": 15000,
-     "listings": 422,
-     "perHour": 3.3
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 15999,
+     "listings": 409,
+     "perHour": 3.4
     },
     "Crossbow Attack Scroll: Intermediate": {
-     "p": 116000.0,
+     "p": 118444.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:08:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 99999,
-     "listings": 141,
+     "listings": 137,
      "perHour": 10.4
     },
     "Steel Avarice": {
      "p": 74999.0,
-     "n": 687,
-     "window": "2 days",
-     "updated": "2026-11-06T11:16:00Z",
+     "n": 685,
+     "window": "3 days",
+     "updated": "2026-11-06T17:56:00Z",
      "low": 39999,
-     "listings": 266,
-     "perHour": 14.3
+     "listings": 253,
+     "perHour": 9.5
     },
     "Gloves Crit. Rate Scroll: Chaos": {
      "p": 100000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:10:00Z",
-     "low": 93000,
-     "listings": 320,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 89000,
+     "listings": 334,
      "perHour": 13.9
     },
     "Overall Armor LUK Scroll: Greater": {
-     "p": 28888.0,
+     "p": 28999.0,
      "n": 1000,
-     "window": "11 hours",
-     "updated": "2026-11-06T10:53:00Z",
-     "low": 19500,
-     "listings": 549,
-     "perHour": 90.9
+     "window": "15 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 20000,
+     "listings": 520,
+     "perHour": 66.7
+    },
+    "Blue Sauna Robe": {
+     "p": 42000.0,
+     "n": 689,
+     "window": "24 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 8888,
+     "listings": 806,
+     "perHour": 28.7
     },
     "Overall Armor INT Scroll: Greater": {
-     "p": 25106.0,
+     "p": 25999.0,
      "n": 1000,
-     "window": "13 hours",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 18999,
-     "listings": 404,
-     "perHour": 76.9
+     "window": "18 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 19000,
+     "listings": 384,
+     "perHour": 55.6
     },
     "Dark Pilfer": {
      "p": 40000.0,
-     "n": 926,
+     "n": 924,
      "window": "2 days",
-     "updated": "2026-11-06T11:17:00Z",
-     "low": 9999,
-     "listings": 232,
-     "perHour": 19.3
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 10500,
+     "listings": 226,
+     "perHour": 19.2
     },
     "Silver Guardian": {
-     "p": 67000.0,
-     "n": 207,
+     "p": 67389.0,
+     "n": 206,
      "window": "3 days",
-     "updated": "2026-11-06T11:11:00Z",
-     "low": 52500,
-     "listings": 121,
+     "updated": "2026-11-06T17:41:00Z",
+     "low": 54999,
+     "listings": 119,
      "perHour": 2.9
     },
     "Black Napoleon": {
-     "p": 89999.0,
-     "n": 772,
+     "p": 89000.0,
+     "n": 773,
      "window": "3 days",
-     "updated": "2026-11-06T11:16:00Z",
+     "updated": "2026-11-06T18:03:00Z",
      "low": 19999,
-     "listings": 125,
+     "listings": 141,
      "perHour": 10.7
     },
     "Overall Armor STR Scroll: Greater": {
      "p": 20000.0,
      "n": 1000,
-     "window": "13 hours",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 11999,
-     "listings": 605,
-     "perHour": 76.9
+     "window": "18 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 15000,
+     "listings": 589,
+     "perHour": 55.6
     },
     "Two-handed Axe Attack Scroll: Intermediate": {
      "p": 79999.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": 60000,
-     "listings": 49,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 88999,
+     "listings": 54,
      "perHour": 10.4
     },
     "Staff Magic Attack Scroll: Intermediate": {
      "p": 120000.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 120000,
-     "listings": 136,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 129000,
+     "listings": 138,
      "perHour": 10.4
     },
     "Dark Shadow Pants": {
      "p": 88888.0,
-     "n": 129,
+     "n": 131,
      "window": "30 days",
-     "updated": "2026-11-06T11:15:00Z",
-     "low": 46666,
-     "listings": 8,
+     "updated": "2026-11-06T12:06:00Z",
+     "low": 79999,
+     "listings": 4,
      "perHour": 0.2
     },
     "Pet Equip Speed Scroll: Lesser": {
      "p": 49999.0,
      "n": 1000,
-     "window": "2 days",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 45000,
-     "listings": 103,
-     "perHour": 20.8
+     "window": "32 hours",
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 39999,
+     "listings": 98,
+     "perHour": 31.2
     },
     "Shoes Speed Scroll: Intermediate": {
-     "p": 120000.0,
+     "p": 121717.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:17:00Z",
-     "low": 117777,
-     "listings": 81,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 124444,
+     "listings": 85,
      "perHour": 8.3
     },
     "Fairy Wing": {
-     "p": 59000.0,
+     "p": 59475.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:15:00Z",
-     "low": 54999,
-     "listings": 56,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 54000,
+     "listings": 60,
      "perHour": 8.3
     },
     "Overall Armor DEX Scroll: Greater": {
      "p": 20000.0,
      "n": 1000,
-     "window": "12 hours",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 10000,
-     "listings": 607,
-     "perHour": 83.3
+     "window": "18 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 17000,
+     "listings": 593,
+     "perHour": 55.6
     },
     "Blue Starlight": {
      "p": 39999.0,
-     "n": 869,
+     "n": 866,
      "window": "2 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 14999,
-     "listings": 376,
-     "perHour": 18.1
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 19999,
+     "listings": 371,
+     "perHour": 18.0
     },
     "Gloves Magic Attack Scroll: Greater": {
      "p": 99999.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:08:00Z",
+     "updated": "2026-11-06T18:03:00Z",
      "low": 110000,
-     "listings": 47,
+     "listings": 50,
      "perHour": 8.3
     },
     "Dark Crusader Chainmail": {
      "p": 39999.0,
-     "n": 826,
+     "n": 825,
      "window": "3 days",
-     "updated": "2026-11-06T11:16:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 15999,
-     "listings": 207,
+     "listings": 241,
      "perHour": 11.5
     },
     "Dark Cleave": {
      "p": 43000.0,
-     "n": 884,
+     "n": 887,
      "window": "2 days",
-     "updated": "2026-11-06T11:15:00Z",
-     "low": 20000,
-     "listings": 210,
-     "perHour": 18.4
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 12500,
+     "listings": 198,
+     "perHour": 18.5
     },
     "Dark Shadow": {
      "p": 89999.0,
-     "n": 101,
+     "n": 102,
      "window": "30 days",
-     "updated": "2026-11-06T10:57:00Z",
-     "low": 80000,
-     "listings": 5,
+     "updated": "2026-11-06T17:37:00Z",
+     "low": 71000,
+     "listings": 7,
      "perHour": 0.1
     },
     "Zard": {
      "p": 30000.0,
-     "n": 243,
+     "n": 244,
      "window": "5 days",
-     "updated": "2026-11-06T11:14:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 13333,
-     "listings": 127,
+     "listings": 131,
      "perHour": 2.0
     },
     "Two-handed Blunt Weapon Attack Scroll: Intermediate": {
      "p": 49999.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:09:00Z",
-     "low": 44000,
-     "listings": 63,
+     "updated": "2026-11-06T18:00:00Z",
+     "low": 49999,
+     "listings": 55,
      "perHour": 10.4
     },
     "Hat Accuracy Scroll: Lesser": {
      "p": 14999.0,
      "n": 1000,
-     "window": "21 hours",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 12600,
-     "listings": 244,
-     "perHour": 47.6
+     "window": "26 hours",
+     "updated": "2026-11-06T17:36:00Z",
+     "low": 13000,
+     "listings": 225,
+     "perHour": 38.5
     },
     "Pet Equip Jump Scroll: Intermediate": {
      "p": 20000.0,
      "n": 1000,
      "window": "2 days",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 10000,
-     "listings": 236,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 14999,
+     "listings": 222,
      "perHour": 20.8
     },
     "Selective 5-slot Coupon": {
      "p": 85000.0,
      "n": 1000,
-     "window": "10 hours",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 75000,
+     "window": "16 hours",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 79999,
      "listings": 1000,
-     "perHour": 100.0
+     "perHour": 62.5
     },
     "SP Reset Scroll": {
      "p": 129999.0,
      "n": 1000,
-     "window": "2 days",
-     "updated": "2026-11-06T11:07:00Z",
-     "low": 125000,
-     "listings": 379,
-     "perHour": 20.8
+     "window": "3 days",
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 117999,
+     "listings": 330,
+     "perHour": 13.9
     },
     "Mystery Hair Coupon": {
-     "p": 99999.0,
+     "p": 100000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:01:00Z",
-     "low": 105999,
-     "listings": 134,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 105000,
+     "listings": 140,
      "perHour": 13.9
     },
     "Auto Move Skill": {
      "p": 59999.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:04:00Z",
-     "low": 61999,
-     "listings": 62,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 69000,
+     "listings": 56,
      "perHour": 13.9
     },
     "Expanded Auto Move Skill": {
      "p": 59999.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 61999,
-     "listings": 65,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 69000,
+     "listings": 63,
      "perHour": 13.9
     },
     "Auto HP Potion Skill": {
-     "p": 49888.0,
+     "p": 49999.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:04:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 51999,
-     "listings": 80,
+     "listings": 70,
      "perHour": 10.4
     },
     "Mystery Face Coupon": {
-     "p": 69999.0,
+     "p": 70000.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 69500,
-     "listings": 197,
+     "updated": "2026-11-06T18:03:00Z",
+     "low": 66000,
+     "listings": 185,
      "perHour": 13.9
     },
     "Auto MP Potion Skill": {
-     "p": 48999.0,
+     "p": 49888.0,
      "n": 1000,
      "window": "4 days",
-     "updated": "2026-11-06T11:04:00Z",
+     "updated": "2026-11-06T18:02:00Z",
      "low": 51999,
-     "listings": 78,
+     "listings": 63,
      "perHour": 10.4
     },
     "Mystery Hair Color Coupon": {
-     "p": 34999.0,
+     "p": 35000.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:02:00Z",
+     "updated": "2026-11-06T18:01:00Z",
      "low": 38999,
-     "listings": 83,
+     "listings": 99,
      "perHour": 8.3
     },
     "AP Reset Scroll": {
-     "p": 89333.0,
-     "n": 806,
+     "p": 89999.0,
+     "n": 823,
      "window": "30 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 125000,
-     "listings": 50,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 127999,
+     "listings": 44,
      "perHour": 1.1
     },
     "Black Kitty": {
-     "p": 58799.0,
+     "p": 58844.0,
      "n": 1000,
      "window": "7 days",
-     "updated": "2026-11-06T11:05:00Z",
-     "low": 84991,
-     "listings": 22,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 78999,
+     "listings": 11,
      "perHour": 6.0
     },
     "Black Pig": {
-     "p": 58000.0,
-     "n": 718,
+     "p": 58250.0,
+     "n": 722,
      "window": "30 days",
-     "updated": "2026-11-06T11:13:00Z",
-     "low": 79999,
-     "listings": 23,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 66000,
+     "listings": 26,
      "perHour": 1.0
     },
     "Red Ribbon": {
      "p": 56999.0,
      "n": 1000,
      "window": "5 days",
-     "updated": "2026-11-06T11:04:00Z",
-     "low": 78999,
-     "listings": 14,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 78700,
+     "listings": 36,
      "perHour": 8.3
     },
     "White Bunny": {
-     "p": 57999.0,
-     "n": 522,
+     "p": 58000.0,
+     "n": 532,
      "window": "30 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 80999,
-     "listings": 31,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 74999,
+     "listings": 23,
      "perHour": 0.7
     },
     "Brown Kitty": {
-     "p": 55999.0,
-     "n": 449,
+     "p": 56333.0,
+     "n": 458,
      "window": "30 days",
-     "updated": "2026-11-06T11:13:00Z",
+     "updated": "2026-11-06T18:01:00Z",
      "low": 79999,
-     "listings": 41,
+     "listings": 24,
      "perHour": 0.6
     },
     "Signature Eye Color Coupon": {
      "p": 44999.0,
-     "n": 881,
+     "n": 893,
      "window": "30 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 59999,
-     "listings": 42,
+     "updated": "2026-11-06T17:58:00Z",
+     "low": 58999,
+     "listings": 45,
      "perHour": 1.2
     },
     "Water of Life": {
-     "p": 45000.0,
+     "p": 46777.0,
      "n": 1000,
      "window": "3 days",
-     "updated": "2026-11-06T11:06:00Z",
-     "low": 45999,
-     "listings": 171,
+     "updated": "2026-11-06T18:02:00Z",
+     "low": 45000,
+     "listings": 152,
      "perHour": 13.9
     },
     "Pink Bunny": {
      "p": 57999.0,
-     "n": 335,
+     "n": 336,
      "window": "30 days",
-     "updated": "2026-11-06T11:16:00Z",
-     "low": 78999,
-     "listings": 16,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 79999,
+     "listings": 12,
      "perHour": 0.5
     },
     "Pet Name Tag": {
      "p": 35000.0,
-     "n": 422,
+     "n": 423,
      "window": "30 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": 39999,
-     "listings": 47,
+     "updated": "2026-11-06T12:06:00Z",
+     "low": 41000,
+     "listings": 42,
      "perHour": 0.6
     },
     "Signature Skin Color Coupon": {
      "p": 38999.0,
-     "n": 475,
+     "n": 476,
      "window": "30 days",
-     "updated": "2026-11-06T11:17:00Z",
-     "low": 50000,
-     "listings": 37,
+     "updated": "2026-11-06T18:00:00Z",
+     "low": 25000,
+     "listings": 32,
      "perHour": 0.7
     },
     "Signature Hair Coupon": {
      "p": 75000.0,
-     "n": 108,
+     "n": 109,
      "window": "30 days",
-     "updated": "2026-11-06T10:03:00Z",
+     "updated": "2026-11-06T12:06:00Z",
      "low": null,
      "listings": null,
-     "perHour": 0.1
+     "perHour": 0.2
     },
     "Brown Puppy": {
      "p": 58888.0,
-     "n": 171,
+     "n": 173,
      "window": "30 days",
-     "updated": "2026-11-06T11:13:00Z",
-     "low": 75000,
+     "updated": "2026-11-06T18:01:00Z",
+     "low": 79999,
      "listings": 11,
      "perHour": 0.2
     },
     "Red Top Hat": {
      "p": 62999.0,
-     "n": 209,
+     "n": 211,
      "window": "30 days",
-     "updated": "2026-11-06T10:57:00Z",
+     "updated": "2026-11-06T18:01:00Z",
      "low": 76666,
-     "listings": 28,
+     "listings": 27,
      "perHour": 0.3
     },
     "Signature Face Coupon": {
      "p": 54999.0,
      "n": 64,
      "window": "30 days",
-     "updated": "2026-11-06T11:06:00Z",
+     "updated": "2026-11-06T17:39:00Z",
      "low": 69999,
-     "listings": 6,
+     "listings": 4,
      "perHour": 0.1
     },
     "Black Hat": {
      "p": 59999.0,
-     "n": 147,
+     "n": 148,
      "window": "30 days",
-     "updated": "2026-11-06T09:54:00Z",
-     "low": 139999,
-     "listings": 1,
+     "updated": "2026-11-06T12:07:00Z",
+     "low": null,
+     "listings": null,
      "perHour": 0.2
     },
     "Yellow Hat": {
@@ -4355,12 +4354,12 @@
      "perHour": 0.2
     },
     "Signature Hair Color Coupon": {
-     "p": 62500.0,
-     "n": 138,
+     "p": 65000.0,
+     "n": 146,
      "window": "30 days",
-     "updated": "2026-11-06T11:00:00Z",
-     "low": 99999,
-     "listings": 6,
+     "updated": "2026-11-06T17:57:00Z",
+     "low": 95000,
+     "listings": 2,
      "perHour": 0.2
     },
     "Red Hat": {
@@ -4376,14 +4375,14 @@
      "p": 49499.0,
      "n": 66,
      "window": "30 days",
-     "updated": "2026-11-06T11:08:00Z",
-     "low": null,
-     "listings": null,
+     "updated": "2026-11-06T17:40:00Z",
+     "low": 89999,
+     "listings": 3,
      "perHour": 0.1
     }
    }
   },
-  "polls": 14,
+  "polls": 15,
   "source": {
    "name": "mesos.watch",
    "url": "https://mesos.watch/"
@@ -4429,6 +4428,11 @@
    "at": "2026-11-06T11:16+00:00",
    "rate": 22.4,
    "n": "209"
+  },
+  {
+   "at": "2026-11-06T18:02+00:00",
+   "rate": 22.0,
+   "n": "763"
   }
  ],
  "smega": {
@@ -4480,64 +4484,72 @@
     "offers": 593,
     "items": 29,
     "src": "kerning.gg"
+   },
+   {
+    "at": "2026-11-06T18:02:51+00:00",
+    "rate": 11.963,
+    "bid": 10.341,
+    "offers": 565,
+    "items": 29,
+    "src": "kerning.gg"
    }
   ],
   "latest": {
-   "at": "2026-11-06T11:16:53+00:00",
-   "rate": 11.991,
-   "bid": 10.351,
-   "offers": 593,
+   "at": "2026-11-06T18:02:51+00:00",
+   "rate": 11.963,
+   "bid": 10.341,
+   "offers": 565,
    "items": 29,
    "src": "kerning.gg",
    "perItem": {
     "Selective 5-slot Coupon": {
      "sell": 50000.0,
      "buy": 50000.0,
-     "low": 60000.0,
-     "sellN": 260,
-     "buyN": 222
+     "low": 80000.0,
+     "sellN": 250,
+     "buyN": 213
     },
     "SP Reset Scroll": {
-     "sell": 81600.0,
+     "sell": 82300.0,
      "buy": 75000.0,
-     "low": 115000.0,
-     "sellN": 74,
-     "buyN": 44
+     "low": 137000.0,
+     "sellN": 72,
+     "buyN": 39
     },
     "Mystery Hair Coupon": {
      "sell": 65000.0,
      "buy": 62500.0,
      "low": null,
-     "sellN": 39,
+     "sellN": 34,
      "buyN": 5
     },
     "Auto Move Skill": {
      "sell": 52500.0,
      "buy": null,
-     "low": 61000.0,
+     "low": null,
      "sellN": 11,
      "buyN": 0
     },
     "Expanded Auto Move Skill": {
      "sell": 55000.0,
      "buy": null,
-     "low": 60000.0,
-     "sellN": 7,
+     "low": null,
+     "sellN": 6,
      "buyN": 0
     },
     "Auto HP Potion Skill": {
      "sell": 45000.0,
      "buy": null,
      "low": null,
-     "sellN": 11,
+     "sellN": 10,
      "buyN": 0
     },
     "Mystery Face Coupon": {
-     "sell": 46500.0,
-     "buy": 42500.0,
+     "sell": 46000.0,
+     "buy": 45000.0,
      "low": null,
-     "sellN": 50,
-     "buyN": 12
+     "sellN": 49,
+     "buyN": 9
     },
     "Auto MP Potion Skill": {
      "sell": 43000.0,
@@ -4550,7 +4562,7 @@
      "sell": 32000.0,
      "buy": null,
      "low": null,
-     "sellN": 9,
+     "sellN": 8,
      "buyN": 0
     },
     "AP Reset Scroll": {
@@ -4562,10 +4574,10 @@
     },
     "Black Kitty": {
      "sell": 54500.0,
-     "buy": 50000.0,
+     "buy": 41000.0,
      "low": null,
      "sellN": 11,
-     "buyN": 3
+     "buyN": 2
     },
     "Black Pig": {
      "sell": 50000.0,
@@ -4578,7 +4590,7 @@
      "sell": 50000.0,
      "buy": 50000.0,
      "low": null,
-     "sellN": 10,
+     "sellN": 9,
      "buyN": 2
     },
     "White Bunny": {
@@ -4596,10 +4608,10 @@
      "buyN": 0
     },
     "Signature Eye Color Coupon": {
-     "sell": 41000.0,
+     "sell": 40500.0,
      "buy": null,
      "low": null,
-     "sellN": 5,
+     "sellN": 4,
      "buyN": 0
     },
     "Water of Life": {
@@ -4624,10 +4636,10 @@
      "buyN": 0
     },
     "Signature Skin Color Coupon": {
-     "sell": 40000.0,
+     "sell": null,
      "buy": null,
      "low": null,
-     "sellN": 2,
+     "sellN": 0,
      "buyN": 0
     },
     "Signature Hair Coupon": {
@@ -4635,7 +4647,7 @@
      "buy": 50000.0,
      "low": null,
      "sellN": 12,
-     "buyN": 5
+     "buyN": 4
     },
     "Brown Puppy": {
      "sell": null,
@@ -4673,10 +4685,10 @@
      "buyN": 0
     },
     "Signature Hair Color Coupon": {
-     "sell": 47500.0,
+     "sell": null,
      "buy": 60000.0,
      "low": null,
-     "sellN": 2,
+     "sellN": 0,
      "buyN": 2
     },
     "Red Hat": {
@@ -4687,10 +4699,10 @@
      "buyN": 0
     },
     "Storage Room 5-slot Coupon": {
-     "sell": 65000.0,
+     "sell": 80000.0,
      "buy": 40600.0,
      "low": null,
-     "sellN": 3,
+     "sellN": 2,
      "buyN": 6
     }
    }
@@ -4709,9 +4721,9 @@
   },
   "mesoswatch": {
    "ok": true,
-   "items": 78,
+   "items": 77,
    "asked": 79,
-   "errors": 1
+   "errors": 2
   },
   "kerning": {
    "ok": true,
