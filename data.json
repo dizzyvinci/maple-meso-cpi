@@ -4,7 +4,7 @@
   "url": "https://maplestory-classic.com/market.json",
   "updatedAt": "2026-11-15T07:15:56+00:00"
  },
- "generatedAt": "2026-11-15T17:57:46+00:00",
+ "generatedAt": "2026-11-15T22:25:58+00:00",
  "base": {
   "start": "2026-10-21",
   "end": "2026-10-27",
@@ -4325,14 +4325,6 @@
  "intraday": {
   "series": [
    {
-    "at": "2026-11-08T19:58:00Z",
-    "cpi": 140.72,
-    "cov": 0.975,
-    "nx": 18.103,
-    "nxTrades": 18850,
-    "basketPerHour": 1044
-   },
-   {
     "at": "2026-11-08T23:23:07Z",
     "cpi": 141.44,
     "cov": 1.0,
@@ -5256,7 +5248,8 @@
   "source": {
    "name": "mesos.watch",
    "url": "https://mesos.watch/"
-  }
+  },
+  "stale": true
  },
  "niadb": [
   {
@@ -5766,10 +5759,10 @@
    "error": "indicator not found on page"
   },
   "mesoswatch": {
-   "ok": true,
-   "items": 77,
+   "ok": false,
+   "items": 0,
    "asked": 79,
-   "errors": 2
+   "errors": 0
   },
   "kerning": {
    "ok": false,
@@ -5777,7 +5770,7 @@
    "errors": 29,
    "polled": true
   },
-  "degraded": false
+  "degraded": true
  },
  "ticks": [
   {
