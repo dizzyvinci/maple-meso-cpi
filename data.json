@@ -4,7 +4,7 @@
   "url": "https://maplestory-classic.com/market.json",
   "updatedAt": "2026-11-20T08:30:56+00:00"
  },
- "generatedAt": "2026-11-20T20:44:53+00:00",
+ "generatedAt": "2026-11-21T01:45:52+00:00",
  "base": {
   "start": "2026-10-21",
   "end": "2026-10-27",
@@ -4674,14 +4674,6 @@
  },
  "intraday": {
   "series": [
-   {
-    "at": "2026-11-13T22:43:26Z",
-    "cpi": 155.09,
-    "cov": 1.0,
-    "nx": 19.527,
-    "nxTrades": 22062,
-    "basketPerHour": 1128
-   },
    {
     "at": "2026-11-14T02:42:47Z",
     "cpi": 155.92,
